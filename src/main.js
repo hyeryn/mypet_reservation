@@ -30,3 +30,6 @@ new Vue({
   vuetify,
   render: h => h(App)
 }).$mount('#app')
+
+// kakao login - javascript key
+window.Kakao.init("a1becea42c820122b65e143effe10f79");

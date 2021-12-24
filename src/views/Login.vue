@@ -54,24 +54,70 @@
                 Naver로 로그인
             </v-btn>
         </div>
-        <div class="row mt-3 mb-5 justify-content-around">
-            <v-btn outlined color="#2A558C" style="font-size: 15px; width: 400px;">
-                <img src="https://pbs.twimg.com/profile_images/738200195578494976/CuZ9yUAT.jpg" alt="" style="width: 25px;">&nbsp;&nbsp;
-                Kakao로 로그인
-            </v-btn>
-        </div>
+        <a href="/Mypage/" @click="kakaoLogin" style="text-decoration:none">
+            <div class="row mt-3 mb-5 justify-content-around">
+                <v-btn outlined color="#2A558C" style="font-size: 15px; width: 400px;">
+                    <img src="https://pbs.twimg.com/profile_images/738200195578494976/CuZ9yUAT.jpg" alt="" style="width: 25px;">&nbsp;&nbsp;
+                    Kakao로 로그인
+                </v-btn>
+            </div>
+        </a>
         <div style="height: 50px;"></div>
     </b-container>    
 </template>
 
 <script>
-export default {
-    
-}
+    import axios from 'axios'
+    export default {
+        methods: {
+            kakaoLogin() {
+                console.log(window.Kakao);
+                window.Kakao.Auth.login({
+                    scope : 'account_email, gender',
+                    success: this.GetMe,
+                });
+            },
+            GetMe(authObj){
+                console.log(authObj);
+                window.Kakao.API.request({
+                    url:'/v2/user/me',
+                    success : res => {
+                        const kakao_account = res.kakao_account;
+                        const userInfo = {
+                            nickname : kakao_account.profile.nickname,
+                            email : kakao_account.email,
+                            password : '',
+                            account_type : 2,
+                        }
+
+                        axios.post('http://localhost:8080/Mypage',{
+                            email : userInfo.email,
+                            nickname : userInfo.nickname
+                        })
+                        .then(res => {
+                        console.log(res);
+                        console.log("데이터베이스에 회원 정보가 있음!");
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        console.log("데이터베이스에 회원 정보가 없음!");
+                        })
+                        console.log(userInfo);
+                        alert("로그인 성공!");
+                        this.$bvModal.hide("bv-modal-example");
+                    },
+                    fail : error => {
+                        this.$router.push("/errorPage");
+                        console.log(error);
+                    }
+                })
+            }
+        }
+    }
 </script>
 
 <style scoped>
 div {
-  font-family: 'Gowun Dodum', sans-serif;
+    font-family: 'Gowun Dodum', sans-serif;
 }
 </style>
