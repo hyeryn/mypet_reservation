@@ -11,7 +11,6 @@
             <div id="content">
                 <!-- Topbar -->
                 <b-nav class="navbar navbar-expand round topbar mb-5 static-top shadow" style="background-color:#C5D9D0;">
-                    
                     <b-container>
                         <h4><b-avatar size="lg" class="mr-2"></b-avatar>문서연님의 마이페이지</h4>
                         <span><v-btn color="#F2F2F2;" href="/About">프로필 수정하기</v-btn></span>
@@ -112,7 +111,7 @@
                             <div class="card shadow mb-4">
                                 <div class="card-header" style="background-color:#8596A6;">
                                     <div class="row my-2 mx-3">
-                                        <h5 class="my-1">{{ value }}</h5>
+                                        <h5 class="my-1">{{ date }}</h5>
                                     </div>                      
                                 </div>
                                 <div class="container mt-3">
@@ -127,7 +126,7 @@
                                         <tr :key="i" v-for="i in 4">
                                             
                                                 <span :key="j" v-for="j in 10">
-                                                    <td style="width:30px">{{ text[(i - 1) * 10 + (j - 1)] }}</td>                                                  
+                                                    <td style="width:30px">{{ diary[(i - 1) * 10 + (j - 1)] }}</td>                                                  
                                                 </span>
                                             
                                         </tr>
@@ -153,7 +152,7 @@
                                         <label class="my-2" for="example-datepicker">날짜 선택</label>
                                         <b-form-datepicker
                                         id="datepicker-buttons"
-                                        v-model="value"
+                                        v-model="date"
                                         today-button
                                         reset-button
                                         close-button
@@ -163,26 +162,26 @@
                                     
                                     <b-form-group class="mb-3">
                                         <label class="my-2" for="example-datepicker">이미지 선택</label>                                     
-                                        <b-form-file id="file-image"></b-form-file>                                        
+                                        <b-form-file id="file-image"  v-model="image"></b-form-file>                                        
                                     </b-form-group>
 
                                     <div class="mb-3">
                                         <label class="my-2" for="example-datepicker">텍스트 입력</label>
                                         <b-form-textarea
                                         id="textarea"
-                                        v-model="text"
+                                        v-model="diary"
                                         placeholder="Enter something..."
                                         rows="3"
                                         max-rows="6"
                                         ></b-form-textarea>
                                         
-                                        <pre class="mt-3 mb-0">{{ text }}</pre>
+                                        <pre class="mt-3 mb-0">{{ diary }}</pre>
                                     </div>
 
                                     <b-row>
                                         <b-col class="col-9"></b-col>
                                         <b-col class="col-3">
-                                            <v-btn class="mx-2 my-3 float-right" size="sm" variant="warning" href="#" color="#2A558C" style="color:white;">저장</v-btn>
+                                            <v-btn class="mx-2 my-3 float-right" size="sm" variant="warning" color="#2A558C" style="color:white;" @click="formSubmit()">저장</v-btn>
                                         </b-col>
                                     </b-row>
                                     
@@ -191,7 +190,12 @@
                             </div>                            
                         </div>
                     </div>
-
+                    <div>
+                        값 확인
+                        {{ date }}
+                        {{ image.name }}
+                        {{ diary }}
+                    </div>
                 </div>
                 <!-- /.container-fluid -->
 
@@ -233,6 +237,37 @@
 </template>
 <script>
 export default {
+    data () {
+    return {
+        date: '',
+        image: '',
+        diary: '',
+        output: ''
+    }
+    },
+    methods: {
+    formSubmit () {
+        this.axios.post('http://localhost:8080/Mypage', {
+        date: this.date,
+        image: this.image,
+        diary: this.diary
+        })
+        
+        .then((response) => {
+            this.output = response.data
+            this.image = ''
+            this.diary = ''
+        })
+        .catch((error) => {
+            this.output = error
+        })
+    }
+    }
+}
+</script>
+
+<script>
+export default {
     methods: {
     formatNames(files) {
         alert(files);
@@ -241,9 +276,9 @@ export default {
     },
     data() {
     return {
-        value: '',
-        text: '',
-        testTXT: "오늘 멍멍이를 데리고 병원에 갔다 왔다. 날씨도 맑아서 산책도 다녀왔다.",
+        date: '',
+        image: '',
+        diary: "오늘 멍멍이를 데리고 병원에 갔다 왔다. 날씨도 맑아서 산책도 다녀왔다.",
     }
     }
 }
@@ -255,6 +290,6 @@ td {width:30px}
 
 <style scoped>
 div {
-  font-family: 'Gowun Dodum', sans-serif;
+font-family: 'Gowun Dodum', sans-serif;
 }
 </style>
