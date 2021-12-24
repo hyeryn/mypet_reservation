@@ -39,10 +39,14 @@
                             required
                             ></b-form-input>
                         </b-form-group>
-
-                        <b-form-group class="my-5">
-                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                            <label class="form-check-label" for="exampleCheck1" style="font-size:15px;">아이디 기억하기</label>
+                        <b-form-group id="input-group-4" v-slot="{ ariaDescribedby }">
+                            <b-form-checkbox-group
+                                v-model="form.checked"
+                                id="checkboxes-4"
+                                :aria-describedby="ariaDescribedby"
+                                >
+                                <b-form-checkbox value="remember">아이디 기억하기</b-form-checkbox>
+                            </b-form-checkbox-group>
                         </b-form-group>
                     </b-form>
 
@@ -107,21 +111,22 @@ export default {
     return {
         form: {
             email: '',
-            password: ''
+            password: '',
+            checked: []
         },
     }
     },
     methods: {
         formSubmit () {
             this.axios.post('http://localhost:8080/Login', {
-            email:  this.form.email,
-            password: this.form.password,
+            form:  this.form
             })
             
             .then((response) => {
                 this.output = response.data
                 this.form.email = ''
                 this.form.password = ''
+                this.form.checked = []
             })
             .catch((error) => {
                 this.output = error
