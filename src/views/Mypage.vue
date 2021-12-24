@@ -190,12 +190,14 @@
                             </div>                            
                         </div>
                     </div>
-                    <div>
-                        값 확인
-                        {{ date }}
-                        {{ image.name }}
-                        {{ diary }}
-                    </div>
+
+                    <b-card class="mt-3" header="Form Data Result">
+                        <pre class="m-0"> 
+                            {{ date }}
+                            {{ image.name }}
+                            {{ diary }}
+                        </pre>
+                    </b-card>
                 </div>
                 <!-- /.container-fluid -->
 
@@ -235,51 +237,37 @@
 
     </b-container>
 </template>
-<script>
-export default {
-    data () {
-    return {
-        date: '',
-        image: '',
-        diary: '',
-        output: ''
-    }
-    },
-    methods: {
-    formSubmit () {
-        this.axios.post('http://localhost:8080/Mypage', {
-        date: this.date,
-        image: this.image,
-        diary: this.diary
-        })
-        
-        .then((response) => {
-            this.output = response.data
-            this.image = ''
-            this.diary = ''
-        })
-        .catch((error) => {
-            this.output = error
-        })
-    }
-    }
-}
-</script>
 
 <script>
 export default {
-    methods: {
-    formatNames(files) {
-        alert(files);
-        return files.length === 1 ? files[0].name : `${files.length} files selected`
-    }
-    },
     data() {
     return {
         date: '',
         image: '',
         diary: "오늘 멍멍이를 데리고 병원에 갔다 왔다. 날씨도 맑아서 산책도 다녀왔다.",
     }
+    },
+    methods: {
+        formatNames(files) {
+            alert(files);
+            return files.length === 1 ? files[0].name : `${files.length} files selected`
+        },
+        formSubmit () {
+            this.axios.post('http://localhost:8080/Mypage', {
+            date: this.date,
+            image: this.image.name,
+            diary: this.diary
+            })
+            
+            .then((response) => {
+                this.output = response.data
+                this.image = ''
+                this.diary = ''
+            })
+            .catch((error) => {
+                this.output = error
+            })
+        }
     }
 }
 
