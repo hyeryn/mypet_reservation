@@ -78,9 +78,11 @@
                                         <span >반려동물 프로필 설정</span>
                                     </v-card-title>
                                     <v-card-text style="height: 50px; position:relative">
+<!--
                                         <v-btn absolute top right fab dark color="pink">
                                             <v-icon>add</v-icon>
-                                        </v-btn>
+                                        </v-btn> 
+-->
                                     </v-card-text>
                                     <v-card-text class="p-5">
                                         <v-container>
