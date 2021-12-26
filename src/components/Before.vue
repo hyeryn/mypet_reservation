@@ -3,7 +3,7 @@
     <body id="page-top">
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-light fixed-top shadow-sm" id="mainNav">
-            <div class="container px-5">
+            <div class="container px-5 py-4">
                 <a class="navbar-brand fw-bold" href="#page-top">멍냥사이트</a>
                 <button class="navbar-toggler" type="button" v-b-toggle.navbarResponsive aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                     Menu
