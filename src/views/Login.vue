@@ -6,28 +6,65 @@
             <div class=" row mx-5 justify-content-around">
                 <div class="col-lg-3 col-sm-0"></div>
                 <div class="col-lg-6 col-sm-12">
-                    <div class="form-group my-5">
-                        <label for="exampleInputEmail1" style="font-weight: 900;">이메일</label>
-                        <input type="email" placeholder="이메일을 입력하세요." class="form-control img-fluid" id="exampleInputEmail1" aria-describedby="emailHelp">
-                    </div>
-                    <div class="form-group my-5">
-                        <label for="exampleInputPassword1" style="font-weight: 900;">비밀번호</label>
-                        <input type="password" placeholder="비밀번호를 입력하세요." class="form-control img-fluid" id="exampleInputPassword1">
-                    </div>
-                    <div class="form-group form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1" style="font-size:15px;">아이디 기억하기</label>
-                    </div>
+                    <b-form>
+                        <b-form-group
+                            id="input-group-1"
+                            label="이메일"
+                            label-for="input-1"
+                            description="We'll never share your email with anyone else."
+                            class="my-5"
+                        >
+                            <b-form-input
+                            id="input-1"
+                            v-model="form.email"
+                            type="email"
+                            placeholder="이메일을 입력하세요."
+                            required
+                            ></b-form-input>
+                        </b-form-group>
+
+                        <b-form-group
+                            id="input-group-2"
+                            label="비밀번호"
+                            label-for="input-2"
+                            description="Your password must be 8-20 characters long, contain letters and numbers, and must not
+                            contain spaces, special characters, or emoji."
+                            class="my-5"
+                        >
+                            <b-form-input
+                            id="input-2"
+                            v-model="form.password"
+                            type="password"
+                            placeholder="비밀번호를 입력하세요."
+                            required
+                            ></b-form-input>
+                        </b-form-group>
+                        <b-form-group id="input-group-4" v-slot="{ ariaDescribedby }">
+                            <b-form-checkbox-group
+                                v-model="form.checked"
+                                id="checkboxes-4"
+                                :aria-describedby="ariaDescribedby"
+                                >
+                                <b-form-checkbox value="remember">아이디 기억하기</b-form-checkbox>
+                            </b-form-checkbox-group>
+                        </b-form-group>
+                    </b-form>
+
                     <div class="row my-4 mx-1 justify-content-around">
-                        <b-button class="btn btn-block btn-primary" type="submit" style="font-size: 17px; background-color: #2A558C;">
+                        <b-button class="btn btn-block btn-primary" type="submit" @click="formSubmit()" style="font-size: 17px; background-color: #2A558C;">
                             로그인
                         </b-button>
                     </div>
+                    <b-card class="mt-3" header="Form Data Result">
+                        <pre class="m-0">{{ form }}</pre>
+                    </b-card>
                     <div>
                         <a class="row my-2"  style="font-size:small; color: rgb(0, 100, 13);">회원가입 하기</a>
                         <a class="row my-2" style="font-size:small; color: rgb(0, 100, 13);">비밀번호 찾기</a>
                     </div>
                 </div>
+                
+
                 <div class="col-lg-3 col-sm-0"></div>
             </div>
         </form>
@@ -54,24 +91,96 @@
                 Naver로 로그인
             </v-btn>
         </div>
-        <div class="row mt-3 mb-5 justify-content-around">
-            <v-btn outlined color="#2A558C" style="font-size: 15px; width: 400px;">
-                <img src="https://pbs.twimg.com/profile_images/738200195578494976/CuZ9yUAT.jpg" alt="" style="width: 25px;">&nbsp;&nbsp;
-                Kakao로 로그인
-            </v-btn>
-        </div>
+        <a href="/Mypage/" @click="kakaoLogin" style="text-decoration:none">
+            <div class="row mt-3 mb-5 justify-content-around">
+                <v-btn outlined color="#2A558C" style="font-size: 15px; width: 400px;">
+                    <img src="https://pbs.twimg.com/profile_images/738200195578494976/CuZ9yUAT.jpg" alt="" style="width: 25px;">&nbsp;&nbsp;
+                    Kakao로 로그인
+                </v-btn>
+            </div>
+        </a>
         <div style="height: 50px;"></div>
     </b-container>    
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
-    
+    data() {
+    return {
+        form: {
+            email: '',
+            password: '',
+            checked: []
+        },
+    }
+    },
+    methods: {
+        formSubmit () {
+            this.axios.post('http://localhost:8080/Login', {
+            form:  this.form
+            })
+            
+            .then((response) => {
+                this.output = response.data
+                this.form.email = ''
+                this.form.password = ''
+                this.form.checked = []
+            })
+            .catch((error) => {
+                this.output = error
+            })
+        },
+        kakaoLogin() {
+            console.log(window.Kakao);
+            window.Kakao.Auth.login({
+                scope : 'account_email, gender',
+                success: this.GetMe,
+            });
+        },
+        GetMe(authObj){
+            console.log(authObj);
+            window.Kakao.API.request({
+                url:'/v2/user/me',
+                success : res => {
+                    const kakao_account = res.kakao_account;
+                    const userInfo = {
+                        nickname : kakao_account.profile.nickname,
+                        email : kakao_account.email,
+                        password : '',
+                        account_type : 2,
+                    }
+
+                    axios.post('http://localhost:8080/Mypage',{
+                        email : userInfo.email,
+                        nickname : userInfo.nickname
+                    })
+                    .then(res => {
+                    console.log(res);
+                    console.log("데이터베이스에 회원 정보가 있음!");
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    console.log("데이터베이스에 회원 정보가 없음!");
+                    })
+                    console.log(userInfo);
+                    alert("로그인 성공!");
+                    this.$bvModal.hide("bv-modal-example");
+                },
+                fail : error => {
+                    this.$router.push("/errorPage");
+                    console.log(error);
+                }
+            })
+        }
+    }
 }
+
 </script>
 
 <style scoped>
 div {
-  font-family: 'Gowun Dodum', sans-serif;
+    font-family: 'Gowun Dodum', sans-serif;
 }
 </style>
