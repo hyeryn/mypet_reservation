@@ -234,13 +234,14 @@ export default {
             })
         },
         formSubmit () {
-            this.axios.post('/api/contacts', {
+            this.axios.post('http://34.64.202.151/profile/pet', {
                 aniname: this.aniname,
                 kind: this.selected.kind,
                 age: this.selected.age,
                 sex: this.selected.sex,
                 weight: this.selected.weight,
                 ani: this.selected.ani,
+                imageSrc: this.imageSrc
             })
             
             .then((response) => {
