@@ -119,7 +119,7 @@
               </v-col>
               <v-col cols="12" sm="6" md="3" >
                 <v-container fluid id="datedetail" >
-                    <DateTimePicker :label="'날짜'" ></DateTimePicker>
+                    <DateTimePicker :label="'날짜'"></DateTimePicker>
                 </v-container>
               </v-col>
               <v-col cols="12" sm="6" md="3" >
@@ -264,7 +264,6 @@ export default {
             },
         message:"",
         e6: 1,
-        date: '',
 
         selectedName:[],
         search:'',

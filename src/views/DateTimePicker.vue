@@ -40,7 +40,18 @@ export default {
   methods: {
     set() {
       this.$refs.dialog.save(this.date);
-    }
-  }
+      this.axios.post('http://34.64.202.151/profile/pet', {
+                date: this.date,
+            })
+            
+            .then((response) => {
+                this.result = response.data
+                this.no = response.data
+            })
+            .catch((error) => {
+                this.output = error
+            })
+    },
+  },
 }
 </script>
