@@ -3,6 +3,10 @@ import App from './App.vue'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import router from './router'
 
+import VueKakaoSdk from 'vue-kakao-sdk'
+const apiKey = '84ad747d38ba57ab892c06039daaf611'
+Vue.use(VueKakaoSdk, {apiKey})
+
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue)
 // Optionally install the BootstrapVue icon components plugin
