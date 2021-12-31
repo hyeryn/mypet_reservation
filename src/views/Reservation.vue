@@ -119,7 +119,7 @@
               </v-col>
               <v-col cols="12" sm="6" md="3" >
                 <v-container fluid id="datedetail" >
-                    <DateTimePicker :label="'날짜'" ></DateTimePicker>
+                    <DateTimePicker :label="'날짜'"></DateTimePicker>
                 </v-container>
               </v-col>
               <v-col cols="12" sm="6" md="3" >
@@ -164,7 +164,7 @@
               </v-col>
             </v-row>
         </v-card>
-        <v-btn color="primary" @click="e6 = 4">Continue</v-btn>
+        <v-btn color="primary" @click="e6 = 4 , formSubmit3">Continue</v-btn>
         <v-btn @click="e6 = 2">Back</v-btn>
       </v-stepper-content>
   
@@ -375,6 +375,20 @@ export default {
     DateTimePicker,
   },
   methods: {
+    formSubmit3 () {
+            this.axios.post('http://34.64.202.151/profile/pet', {
+                time: this.time,
+            })
+            
+            .then((response) => {
+                this.result = response.data
+                this.no = response.data
+            })
+            .catch((error) => {
+                this.output = error
+            })
+        },
+
     showAlert(a){
       //if (event.target.classList.contains('btn__content')) return;
       alert(a.name + '\n');
