@@ -25,7 +25,7 @@
       </v-stepper-step>
   
       <v-stepper-content step="2">
-        <v-card color="grey lighten-3" class="mb-5" height="700px">
+        <v-card color="grey lighten-3" class="mb-5" height="950px">
           <v-card-title>
             Search
             <v-spacer></v-spacer>
@@ -56,6 +56,7 @@
                "{{ search }}" 는 존재하지 않습니다.
             </v-alert>
           </v-data-table>
+          <br>
 
           <v-card v-if="isStatusOn"
             class="mx-auto elevation-20"
@@ -63,17 +64,18 @@
             dark
             style="max-width: 400px;"          
           >
-
+          
+<!--
           <div id="map" style="width:100%;height:350px;"></div>
-
+-->
             <v-layout justify-space-between>
               <v-flex xs8>
                 <v-card-title primary-title>
                   <div>
                     <h1>{{name}}</h1>
                     <v-spacer></v-spacer>
-                    <div>{{review}}</div>
-                    <div>방문자 리뷰 : {{count}}</div>
+                    <div>거리 : {{distance}}</div>
+                    <div>방문자 리뷰 : {{review}}</div>
                   </div>
                 </v-card-title>
               </v-flex>
@@ -103,7 +105,6 @@
               ></v-rating>
             </v-card-actions>
           </v-card>
-          -->
         </v-card>
         <v-btn color="primary" @click="e6 = 3">Continue</v-btn>
         <v-btn @click="e6 = 1">Back</v-btn>
@@ -256,7 +257,7 @@ export default {
         name: "",
         review: '',
         star: '',
-        count: '',
+        distance: '',
         time:'',
             selected: {
                 ani: '',
@@ -433,16 +434,6 @@ export default {
   }
 }
 </script>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=84ad747d38ba57ab892c06039daaf611"></script>
-<script>
-		var container = document.getElementById('map');
-		var options = {
-			center: new kakao.maps.LatLng(33.450701, 126.570667),
-			level: 3
-		};
-
-		var map = new kakao.maps.Map(container, options);
-	</script>
 <!--
 <script>
 var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
