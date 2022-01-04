@@ -44,7 +44,6 @@
             :search="search" 
           >
             <template slot="item" slot-scope="props">
-              <!--<tr @click="showAlert(props.item)" >-->
               <tr @click="toggleOnOff(props.item)">
               <td>{{ props.item.name }}</td>
               <td class="text-xs-right">{{ props.item.distance }}</td>
@@ -168,7 +167,7 @@
               </v-col>
             </v-row>
         </v-card>
-        <v-btn color="primary" @click="e6 = 4 , formSubmit3">Continue</v-btn>
+        <v-btn color="primary" @click="e6 = 4">Continue</v-btn>
         <v-btn @click="e6 = 2">Back</v-btn>
       </v-stepper-content>
   
@@ -240,7 +239,7 @@
             </v-col>
           </v-row>
         </v-card>
-        <v-btn color="primary" @click="e6 = 1">Reservation</v-btn>
+        <v-btn color="primary" @click="Reserv">Reservation</v-btn>
         <v-btn @click="e6 = 3">Back</v-btn>
       </v-stepper-content>
     </v-stepper>
@@ -249,7 +248,7 @@
 </template>
 <script>
 import DateTimePicker from "../../src/views/DateTimePicker.vue";
-
+import axios from 'axios'
 export default {
   name: 'reservation',
   data: function(){
@@ -379,24 +378,17 @@ export default {
     DateTimePicker,
   },
   methods: {
-    formSubmit3 () {
-            this.axios.post('http://34.64.202.151/profile/pet', {
-                time: this.time,
-            })
+    Reserv () {
+       const reservData = {
+                // 보낼 데이터 정보
+            }
+            console.log(reservData)
             
-            .then((response) => {
-                this.result = response.data
-                this.no = response.data
-            })
-            .catch((error) => {
-                this.output = error
-            })
-        },
-
-    showAlert(a){
-      //if (event.target.classList.contains('btn__content')) return;
-      alert(a.name + '\n');
+            axios.post('http://34.64.202.151/profile/pet', reservData)
+                .then(res => console.log(res))
+                .catch(error => console.log(error))
     },
+
     toggleOnOff(a) {
       this.isStatusOn = !this.isStatusOn;
       this.name = a.name;
