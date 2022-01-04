@@ -25,7 +25,7 @@
       </v-stepper-step>
   
       <v-stepper-content step="2">
-        <v-card color="grey lighten-3" class="mb-5" height="950px">
+        <v-card color="grey lighten-3" class="mb-5" height="1200px">
           <v-card-title>
             Search
             <v-spacer></v-spacer>
@@ -63,10 +63,7 @@
             dark
             style="max-width: 400px;"          
           >
-          
-<!--
-          <div id="map" style="width:100%;height:350px;"></div>
--->
+          <KaKaoMap></KaKaoMap>
             <v-layout justify-space-between>
               <v-flex xs8>
                 <v-card-title primary-title>
@@ -248,6 +245,7 @@
 </template>
 <script>
 import DateTimePicker from "../../src/views/DateTimePicker.vue";
+import KaKaoMap from "../../src/views/map.vue";
 import axios from 'axios'
 export default {
   name: 'reservation',
@@ -376,6 +374,7 @@ export default {
   },
   components: {
     DateTimePicker,
+    KaKaoMap
   },
   methods: {
     Reserv () {
