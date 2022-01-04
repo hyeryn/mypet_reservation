@@ -1,3 +1,5 @@
+
+
 <template>
     <b-container>
         <div style="height: 150px;"></div>
@@ -35,7 +37,7 @@
                             class="my-5"
                         >
                             <b-form-input
-                            id="input-2"
+                            id="password"
                             v-model="signUpForm.password"
                             type="password"
                             placeholder="비밀번호를 입력하세요."
@@ -50,7 +52,7 @@
                             class="my-5"
                         >
                             <b-form-input
-                            id="input-2"
+                            id="password2"
                             v-model="signUpForm.verifyPassword"
                             type="password"
                             placeholder="비밀번호를 다시 입력하세요."
@@ -106,7 +108,11 @@
                     </b-form>
 
                     <div class="row my-4 mx-1 justify-content-around">
-                        <b-button class="btn btn-block btn-primary" type="submit" @click="formSubmit()" style="font-size: 17px; background-color: #2A558C;">
+                        <b-button class="btn btn-block btn-primary"
+                            @click="formSubmit"
+                            style="font-size: 17px; background-color: #2A558C;"
+                            href="/Home"
+                            >
                             회원가입
                         </b-button>
                     </div>
@@ -122,6 +128,26 @@
     </b-container>
 </template>
 <script>
+function test() { // eslint-disable-line no-unused-vars
+
+    var p1 = document.getElementById('password1').value;
+    var p2 = document.getElementById('password2').value;
+    
+    if(p1.length < 6) {
+            alert('입력한 글자가 6글자 이상이어야 합니다.');
+            return false;
+        }
+        
+        if( p1 != p2 ) {
+        alert("비밀번호불일치");
+        return false;
+        } else{
+        alert("비밀번호가 일치합니다");
+        return true;
+        }
+}
+
+
 import axios from 'axios'
 
 export default {
@@ -130,7 +156,6 @@ export default {
         signUpForm: {
             email: '',
             password: '',
-            verifyPassword: '',
             nickName: '',
             name: '',
             phoneNumber: ''
@@ -145,20 +170,20 @@ export default {
                 this.result = response.data
             })
         },
-
         formSubmit () {
-            this.axios.post('http://34.64.202.151/profile/pet', {
-            signUpForm:  this.signUpForm
-            })
+            const signUpFormData = {
+                email: this.signUpForm.email,
+                password: this.signUpForm.password,
+                nickName: this.signUpForm.nickName,
+                name: this.signUpForm.name,
+                phoneNumber: this.signUpForm.phoneNumber
+            }
+
+            console.log(signUpFormData)
             
-            .then((response) => {
-                this.output = response.data
-                this.signUpForm.email = ''
-                this.signUpForm.password = ''
-            })
-            .catch((error) => {
-                this.output = error
-            })
+            axios.post('http://34.64.202.151/profile/pet', signUpFormData)
+                .then(res => console.log(res))
+                .catch(error => console.log(error))
         },
 
     }
