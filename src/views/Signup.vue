@@ -181,7 +181,7 @@ export default {
 
             console.log(signUpFormData)
             
-            axios.post('http://34.64.202.151/profile/pet', signUpFormData)
+            axios.post('http://34.64.202.151/auth/signup', signUpFormData)
                 .then(res => console.log(res))
                 .catch(error => console.log(error))
         },
