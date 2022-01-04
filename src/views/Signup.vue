@@ -53,7 +53,6 @@
                         >
                             <b-form-input
                             id="password2"
-                            v-model="signUpForm.verifyPassword"
                             type="password"
                             placeholder="비밀번호를 다시 입력하세요."
                             required
@@ -111,7 +110,7 @@
                         <b-button class="btn btn-block btn-primary"
                             @click="formSubmit"
                             style="font-size: 17px; background-color: #2A558C;"
-                            
+                        
                             >
                             회원가입
                         </b-button>
