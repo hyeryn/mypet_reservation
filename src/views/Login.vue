@@ -51,7 +51,11 @@
                     </b-form>
 
                     <div class="row my-4 mx-1 justify-content-around">
-                        <b-button class="btn btn-block btn-primary" type="submit" @click="formSubmit()" style="font-size: 17px; background-color: #2A558C;">
+                        <b-button class="btn btn-block btn-primary"
+                            style="font-size: 17px; background-color: #2A558C;"
+                            @click="formSubmit"
+                            href="/Home"
+                        >
                             로그인
                         </b-button>
                     </div>
@@ -124,21 +128,18 @@ export default {
                 this.result = response.data
             })
         },
-
         formSubmit () {
-            this.axios.post('http://34.64.202.151/profile/pet', {
-            loginForm:  this.loginForm
-            })
+            const loginFormData = {
+                email: this.loginForm.email,
+                password: this.loginForm.password,
+                checked: this.loginForm.checked
+            }
 
-            .then((response) => {
-                this.output = response.data
-                this.loginForm.email = ''
-                this.loginForm.password = ''
-                this.loginForm.checked = []
-            })
-            .catch((error) => {
-                this.output = error
-            })
+            console.log(loginFormData)
+            
+            axios.post('http://34.64.202.151/auth/signup', loginFormData)
+                .then(res => console.log(res))
+                .catch(error => console.log(error))
         },
         kakaoLogin() {
             console.log(window.Kakao);
