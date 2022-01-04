@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 export default {
   name: "DateTimePicker",
@@ -40,18 +41,15 @@ export default {
   methods: {
     set() {
       this.$refs.dialog.save(this.date);
-      this.axios.post('http://34.64.202.151/profile/pet', {
+       const dateData = {
                 date: this.date,
-            })
+            }
+            console.log(dateData)
             
-            .then((response) => {
-                this.result = response.data
-                this.no = response.data
-            })
-            .catch((error) => {
-                this.output = error
-            })
-    },
+            axios.post('http://34.64.202.151/profile/pet', dateData)
+                .then(res => console.log(res))
+                .catch(error => console.log(error))
+    }
   },
 }
 </script>
