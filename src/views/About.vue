@@ -234,7 +234,7 @@ export default {
             })
         },
         formSubmit () {
-            this.axios.post('http://34.64.202.151/profile/pet', {
+            const formData = {
                 aniname: this.aniname,
                 kind: this.selected.kind,
                 age: this.selected.age,
@@ -242,16 +242,12 @@ export default {
                 weight: this.selected.weight,
                 ani: this.selected.ani,
                 imageSrc: this.imageSrc
-            })
+            }
+            console.log(formData)
             
-            .then((response) => {
-                this.result = response.data
-                this.no = response.data
-                this.aniname = ''
-            })
-            .catch((error) => {
-                this.output = error
-            })
+            axios.post('http://34.64.202.151/profile/pet', formData)
+                .then(res => console.log(res))
+                .catch(error => console.log(error))
         },
 
         openDaumPostcode () {
