@@ -18,7 +18,7 @@
                     <div class="card">
                         <div class="card-header" style="background-color:#8596A6;">
                             <div class="row my-2 mx-3">
-                                <h4 class="my-1"><span>10</span>월 <span>10</span>일 <span>일</span>요일</h4>
+                                <h4 class="my-1">오늘의 날씨 맑음&nbsp;&nbsp;<small class="text-muted"><span>10</span>월 <span>10</span>일 <span>일</span>요일</small></h4>
                             </div>                      
                         </div>
                             

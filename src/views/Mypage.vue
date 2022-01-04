@@ -111,7 +111,7 @@
                             <div class="card shadow mb-4">
                                 <div class="card-header" style="background-color:#8596A6;">
                                     <div class="row my-2 mx-3">
-                                        <h5 class="my-1">{{ date }}</h5>
+                                        <h5 class="my-1">{{ title }}&nbsp;&nbsp;<small class="text-muted">{{ date }}</small></h5>
                                     </div>                      
                                 </div>
                                 <div class="container mt-3">
@@ -121,17 +121,16 @@
                                 </div>
                                 
                                 <div class="container card-body">
-                                    <table border="1" class="table-bordered" style="text-align:center; border: 1px solid #444444; width:100%">                                            
-                                        
+                                    <div class="container">
+                                        {{ diary }}
+                                    </div>
+                                    <!--<table border="1" class="table-bordered" style="text-align:center; border: 1px solid #444444; width:100%">                                            
                                         <tr :key="i" v-for="i in 4">
-                                            
                                                 <span :key="j" v-for="j in 10">
                                                     <td style="width:30px">{{ diary[(i - 1) * 10 + (j - 1)] }}</td>                                                  
                                                 </span>
-                                            
                                         </tr>
-                                    </table>
-
+                                    </table>-->
                                     <div>
                                         <v-btn class="mx-2 my-3 justify-end" size="sm" variant="warning" href="#" color="#2A558C" style="color:white;">자세히 보기</v-btn>
                                     </div>
@@ -146,7 +145,15 @@
                                 <div class="card-header" style="background-color:#8596A6;">
                                     <h6 class="fas-bold my-1"><strong>수정하기</strong></h6>
                                 </div>
-                                <div class="card-body">                                    
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label class="my-1" for="example-datepicker">제목</label>
+                                        <b-form-input
+                                            id="input-1"
+                                            v-model="title"
+                                            >
+                                        </b-form-input>
+                                    </div>                                    
                                     
                                     <div class="mb-3">
                                         <label class="my-2" for="example-datepicker">날짜 선택</label>
@@ -193,6 +200,7 @@
 
                     <b-card class="mt-3" header="Form Data Result">
                         <pre class="m-0"> 
+                            {{ title }}
                             {{ date }}
                             {{ image.name }}
                             {{ diary }}
@@ -239,9 +247,12 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
     data() {
     return {
+        title: '',
         date: '',
         image: '',
         diary: "오늘 멍멍이를 데리고 병원에 갔다 왔다. 날씨도 맑아서 산책도 다녀왔다.",
@@ -252,8 +263,19 @@ export default {
             alert(files);
             return files.length === 1 ? files[0].name : `${files.length} files selected`
         },
+
+        MyData : function() {
+            axios.get('/api/contacts/')
+            .then((response) => {
+                console.warn(response);
+                this.result = response.data
+            })
+        },
+
         formSubmit () {
+            
             this.axios.post('http://localhost:8080/Mypage', {
+            title: this.title,
             date: this.date,
             image: this.image.name,
             diary: this.diary

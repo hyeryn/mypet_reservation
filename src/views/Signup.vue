@@ -17,7 +17,7 @@
                         >
                             <b-form-input
                             id="input-1"
-                            v-model="form.email"
+                            v-model="signUpForm.email"
                             type="email"
                             placeholder="이메일을 입력하세요."
                             required
@@ -36,7 +36,7 @@
                         >
                             <b-form-input
                             id="input-2"
-                            v-model="form.password"
+                            v-model="signUpForm.password"
                             type="password"
                             placeholder="비밀번호를 입력하세요."
                             required
@@ -51,7 +51,7 @@
                         >
                             <b-form-input
                             id="input-2"
-                            v-model="form.verifyPassword"
+                            v-model="signUpForm.verifyPassword"
                             type="password"
                             placeholder="비밀번호를 다시 입력하세요."
                             required
@@ -68,7 +68,7 @@
                         >
                             <b-form-input
                             id="input-1"
-                            v-model="form.nickName"
+                            v-model="signUpForm.nickName"
                             placeholder="닉네임을 입력하세요."
                             required
                             style="width: 375px; display: inline-block;"
@@ -84,7 +84,7 @@
                         >
                             <b-form-input
                             id="input-2"
-                            v-model="form.name"
+                            v-model="signUpForm.name"
                             placeholder="이름을 입력하세요."
                             required
                             ></b-form-input>
@@ -98,7 +98,7 @@
                         >
                             <b-form-input
                             id="input-2"
-                            v-model="form.phoneNumber"
+                            v-model="signUpForm.phoneNumber"
                             placeholder="'-'없이 숫자만 입력해 주세요"
                             required
                             ></b-form-input>
@@ -111,7 +111,7 @@
                         </b-button>
                     </div>
                     <b-card class="mt-3" header="Form Data Result">
-                        <pre class="m-0">{{ form }}</pre>
+                        <pre class="m-0">{{ signUpForm }}</pre>
                     </b-card>
 
                     <div style="height:100px;"></div>
@@ -122,11 +122,12 @@
     </b-container>
 </template>
 <script>
+import axios from 'axios'
 
 export default {
     data() {
     return {
-        form: {
+        signUpForm: {
             email: '',
             password: '',
             verifyPassword: '',
@@ -137,15 +138,23 @@ export default {
     }
     },
     methods: {
+        MyData : function() {
+            axios.get('/api/contacts/')
+            .then((response) => {
+                console.warn(response);
+                this.result = response.data
+            })
+        },
+
         formSubmit () {
-            this.axios.post('http://localhost:8080/Signup', {
-                form:  this.form
+            this.axios.post('http://34.64.202.151/profile/pet', {
+            signUpForm:  this.signUpForm
             })
             
             .then((response) => {
                 this.output = response.data
-                this.form.email = ''
-                this.form.password = ''
+                this.signUpForm.email = ''
+                this.signUpForm.password = ''
             })
             .catch((error) => {
                 this.output = error

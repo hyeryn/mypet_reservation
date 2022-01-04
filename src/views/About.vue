@@ -16,6 +16,11 @@
                                     <v-card-title style="height: 100px;" class="grey lighten-4">
                                         <span>프로필 설정</span>
                                     </v-card-title>
+                                    <v-card-text style="height: 50px; position:relative">
+                                        <v-btn absolute top right fab dark color="pink" @click="MyData">
+                                            <v-icon>add</v-icon>
+                                        </v-btn> 
+                                    </v-card-text>
                                     <v-card-text class="p-5">
                                         <v-container>
                                             <v-row>
@@ -78,9 +83,11 @@
                                         <span >반려동물 프로필 설정</span>
                                     </v-card-title>
                                     <v-card-text style="height: 50px; position:relative">
+<!--
                                         <v-btn absolute top right fab dark color="pink">
                                             <v-icon>add</v-icon>
-                                        </v-btn>
+                                        </v-btn> 
+-->
                                     </v-card-text>
                                     <v-card-text class="p-5">
                                         <v-container>
@@ -166,10 +173,17 @@
                                     </v-card-text>
                                     <v-card-actions>
                                         <v-spacer></v-spacer>
-                                        <v-btn
+                                        <!-- <v-btn
                                         color="blue darken-1"
                                         text
                                         @click="dialog = false"
+                                        >
+                                        Save
+                                        </v-btn> -->
+                                        <v-btn
+                                        color="blue darken-1"
+                                        text
+                                        @click="formSubmit"
                                         >
                                         Save
                                         </v-btn>
@@ -212,55 +226,64 @@ export default {
         }
     },
     methods: {
+        MyData : function() {
+            axios.get('/api/contacts/')
+            .then((response) => {
+                console.warn(response);
+                this.result = response.data
+            })
+        },
+        formSubmit () {
+            const formData = {
+                aniname: this.aniname,
+                kind: this.selected.kind,
+                age: this.selected.age,
+                sex: this.selected.sex,
+                weight: this.selected.weight,
+                ani: this.selected.ani,
+                imageSrc: this.imageSrc
+            }
+            console.log(formData)
+            
+            axios.post('http://34.64.202.151/profile/pet', formData)
+                .then(res => console.log(res))
+                .catch(error => console.log(error))
+        },
+
         openDaumPostcode () {
             const elementWrap = this.$refs.wrap
-            // 현재 scroll 위치를 저장해놓는다.
             const currentScroll = Math.max(document.body.scrollTop, document.documentElement.scrollTop)
             new window.daum.Postcode({
                 oncomplete: (data) => {
-                    let addr = '' // 주소 변수
         
-                    // 사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
-                    if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                    if (data.userSelectedType === 'R') { 
                         addr = data.roadAddress
-                    } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                    } else {
                         addr = data.jibunAddress
                     }
         
-                    // 우편번호와 주소 정보를 해당 필드에 넣는다.
-                    // document.getElementById('address').value = addr
-                    this.address = addr
-        
-                    // iframe을 넣은 element를 안보이게 한다.
-                    // (autoClose:false 기능을 이용한다면, 아래 코드를 제거해야 화면에서 사라지지 않는다.)
+                    this.address = add;
                     elementWrap.style.display = 'none'
-        
-                    // 우편번호 찾기 화면이 보이기 이전으로 scroll 위치를 되돌린다.
+
                     document.body.scrollTop = currentScroll
 
-                    let fullRoadAddr = data.roadAddress;  // 도로명 주소 변수 
-                    let extraRoadAddr = '';  // 도로명 조합형 주소 변수 
-                    
-                    // 법정동명이 있을 경우 추가한다. (법정리는 제외) 
-                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다. 
+                    let fullRoadAddr = data.roadAddress;  
+                    let extraRoadAddr = ''; 
+
                     if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){ 
                         extraRoadAddr += data.bname; 
                     }
-                    // 건물명이 있고, 공동주택일 경우 추가한다. 
                     if(data.buildingName !== '' && data.apartment === 'Y'){ 
                         extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName); 
                     } 
-                    // 도로명, 지번 조합형 주소가 있을 경우, 괄호까지 추가한 최종 문자열을 만든다. 
                     if(extraRoadAddr !== ''){ extraRoadAddr = ' (' + extraRoadAddr + ')'; 
                     } 
-                    // 도로명, 지번 주소의 유무에 따라 해당 조합형 주소를 추가한다. 
                     if(fullRoadAddr !== ''){ fullRoadAddr += extraRoadAddr; } 
                     
-                    // 우편번호와 주소 정보를 해당 필드에 넣는다. 
-                    this.zip = data.zonecode; //5자리 새 우편번호 사용
+                    this.zip = data.zonecode; 
                     this.addr1 = fullRoadAddr; 
                 },
-                // 우편번호 찾기 화면 크기가 조정되었을때 실행할 코드를 작성하는 부분. iframe을 넣은 element의 높이값을 조정한다.
+
                 onresize: function (size) {
                     elementWrap.style.height = size.height + 'px'
                 },

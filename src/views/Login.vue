@@ -16,7 +16,7 @@
                         >
                             <b-form-input
                             id="input-1"
-                            v-model="form.email"
+                            v-model="loginForm.email"
                             type="email"
                             placeholder="이메일을 입력하세요."
                             required
@@ -33,7 +33,7 @@
                         >
                             <b-form-input
                             id="input-2"
-                            v-model="form.password"
+                            v-model="loginForm.password"
                             type="password"
                             placeholder="비밀번호를 입력하세요."
                             required
@@ -41,7 +41,7 @@
                         </b-form-group>
                         <b-form-group id="input-group-4" v-slot="{ ariaDescribedby }">
                             <b-form-checkbox-group
-                                v-model="form.checked"
+                                v-model="loginForm.checked"
                                 id="checkboxes-4"
                                 :aria-describedby="ariaDescribedby"
                                 >
@@ -56,7 +56,7 @@
                         </b-button>
                     </div>
                     <b-card class="mt-3" header="Form Data Result">
-                        <pre class="m-0">{{ form }}</pre>
+                        <pre class="m-0">{{ loginForm }}</pre>
                     </b-card>
                     <div>
                         <a class="row my-2"  style="font-size:small; color: rgb(0, 100, 13);">회원가입 하기</a>
@@ -109,7 +109,7 @@ import axios from 'axios'
 export default {
     data() {
     return {
-        form: {
+        loginForm: {
             email: '',
             password: '',
             checked: []
@@ -117,16 +117,24 @@ export default {
     }
     },
     methods: {
-        formSubmit () {
-            this.axios.post('http://localhost:8080/Login', {
-            form:  this.form
+        MyData : function() {
+            axios.get('/api/contacts/')
+            .then((response) => {
+                console.warn(response);
+                this.result = response.data
             })
-            
+        },
+
+        formSubmit () {
+            this.axios.post('http://34.64.202.151/profile/pet', {
+            loginForm:  this.loginForm
+            })
+
             .then((response) => {
                 this.output = response.data
-                this.form.email = ''
-                this.form.password = ''
-                this.form.checked = []
+                this.loginForm.email = ''
+                this.loginForm.password = ''
+                this.loginForm.checked = []
             })
             .catch((error) => {
                 this.output = error
