@@ -10,7 +10,7 @@ const con = mysql.createConnection({
 });
 con.connect();
 
-router.post('/signup', function (req, res) { // 하위 링크 수정
+router.post('/Signup', function (req, res) {
     var email = req.body.email;
     var pw = req.body.pw;
     var nickname = req.body.nickname; 
@@ -24,12 +24,13 @@ router.post('/signup', function (req, res) { // 하위 링크 수정
         }
         else {
             console.log('sign up success')
+            console.log(email+' '+pw)
         }
     });
 });
 
 
-router.post('/signin', function (req, res) { // 하위 링크 수정
+router.post('/Login', function (req, res) {
     var email = req.body.email; 
     var pw = req.body.pw;
 

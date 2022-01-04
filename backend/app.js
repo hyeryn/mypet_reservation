@@ -22,3 +22,27 @@ app.use('/profile', profile);
 app.listen(3000, () => {
     console.log('server connected');
 });
+
+
+const auth = require('./auth');
+app.use('/auth', auth);
+
+app.listen(3000, () => {
+    console.log('server connected');
+});
+
+
+const main = require('./main');
+app.use('/main', main);
+
+app.listen(3000, () => {
+    console.log('server connected');
+});
+
+
+const diary = require('./diary');
+app.use('/diary', diary);
+
+app.listen(3000, () => {
+    console.log('server connected');
+});
