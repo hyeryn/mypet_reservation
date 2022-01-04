@@ -111,7 +111,7 @@
                         <b-button class="btn btn-block btn-primary"
                             @click="formSubmit"
                             style="font-size: 17px; background-color: #2A558C;"
-                            href="/Home"
+                            
                             >
                             회원가입
                         </b-button>
@@ -185,7 +185,6 @@ export default {
                 .then(res => console.log(res))
                 .catch(error => console.log(error))
         },
-
     }
 }
 
