@@ -2,40 +2,70 @@
   <div>
     <div id="map"></div>
     <div class="button-group">
-      <button @click="placeSearch()">marker set</button>
+      {{sPlace + '는 장소'}}
+      <button @click="placeSearch()">검색</button>
     </div>
+    <v-card 
+            class="mx-auto elevation-20"
+            color="#385F73"
+            dark
+            style="max-width: 400px;"          
+          >
+            <v-layout justify-space-between>
+              <v-flex xs8>
+                <v-card-title primary-title>
+                  <div>
+                    <h1>{{name}}</h1>
+                    <!--
+                    <v-spacer></v-spacer>
+                    <div>거리 : {{distance}}</div>
+                    <div>방문자 리뷰 : {{review}}</div>
+                    -->
+                  </div>
+                </v-card-title>
+              </v-flex>
+              <v-img
+                class="shrink ma-2"
+                contain
+                height="125px"
+                src="https://cdn.vuetifyjs.com/images/cards/halcyon.png"
+                style="flex-basis: 125px"
+              ></v-img>
+            </v-layout>
+            <v-divider dark></v-divider>
+            <v-card-actions class="pa-3">
+              평점
+              <v-spacer></v-spacer>
+              <span class="grey--text text--lighten-2 caption mr-2">
+                ({{ star }})
+              </span>
+              <v-rating
+                v-model="star"
+                background-color="white"
+                color="yellow accent-4"
+                dense
+                half-increments
+                hover
+                size="18"
+              ></v-rating>
+            </v-card-actions>
+          </v-card>
   </div>
 </template>
 
 <script>
 export default {
-  name: "KakaoMap",
   data() {
     return {
-      map: {
-        setCenter:{}
-      },
-      markerPositions1: [
-        [33.452278, 126.567803],
-        [33.452671, 126.574792],
-        [33.451744, 126.572441],
-      ],
-      markerPositions2: [
-        [37.499590490909185, 127.0263723554437],
-        [37.499427948430814, 127.02794423197847],
-        [37.498553760499505, 127.02882598822454],
-        [37.497625593121384, 127.02935713582038],
-        [37.49629291770947, 127.02587362608637],
-        [37.49754540521486, 127.02546694890695],
-        [37.49646391248451, 127.02675574250912],
-      ],
+      sPlace: this.$store.getters.fnGetPlace,
       markers: [],
       latitude:[],
-      longitude: []
+      longitude: [],
+
+      name: ''
     };
   },
   mounted() {
-
     // 접속 위치 얻어오기
     navigator.geolocation.getCurrentPosition(pos => {
       this.latitude = pos.coords.latitude; //위도
@@ -58,7 +88,7 @@ export default {
         const script = document.createElement("script");
         /* global kakao */
         script.onload = () => kakao.maps.load(this.initMap);
-        script.src = "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=915cffed372954b7b44804ed422b9cf0";
+        script.src = "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=84ad747d38ba57ab892c06039daaf611";
         document.head.appendChild(script);
       }
 
@@ -103,9 +133,9 @@ export default {
 
     placeSearch(){
       var ps = new kakao.maps.services.Places(this.map); 
-
+      console.log(this.sPlace);
       // 키워드로 장소를 검색합니다
-      ps.keywordSearch('동물병원', this.placesSearchCB,this.searchOption); 
+      ps.keywordSearch('동물병원', this.placesSearchCB, this.searchOption); 
     },
 
     placesSearchCB (data, status) {
@@ -138,7 +168,9 @@ export default {
     // 마커에 클릭이벤트를 등록합니다
     kakao.maps.event.addListener(marker, 'click', function() {
         // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
-        console.log(place.place_name, place.address_name, place.phone)
+        console.log(place.place_name, place.address_name, place.phone);
+        this.name = place.place_name;
+        console.log(this.name);
     });
 }
 

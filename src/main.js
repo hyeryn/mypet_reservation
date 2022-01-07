@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import router from './router'
+import store from './store'
 
 import VueKakaoSdk from 'vue-kakao-sdk'
 const apiKey = '84ad747d38ba57ab892c06039daaf611'
@@ -32,6 +33,7 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 new Vue({
   router,
   vuetify,
+  store,
   render: h => h(App)
 }).$mount('#app')
 

@@ -25,45 +25,56 @@
       </v-stepper-step>
   
       <v-stepper-content step="2">
-        <v-card color="grey lighten-3" class="mb-5" height="1200px">
-          <v-card-title>
-            Search
-            <v-spacer></v-spacer>
-            <v-text-field
-              v-model="search"
-              append-icon="mdi-magnify"
-              label="Search"
-              single-line
-              hide-details
-            ></v-text-field>
-          </v-card-title>
-          <v-data-table
-            v-model="selectedName"
-            :headers="headers"
-            :items="items"
-            :search="search" 
-          >
-            <template slot="item" slot-scope="props">
-              <tr @click="toggleOnOff(props.item)">
-              <td>{{ props.item.name }}</td>
-              <td class="text-xs-right">{{ props.item.distance }}</td>
-              <td class="text-xs-right">{{ props.item.star }}</td>
-              <td class="text-xs-right">{{ props.item.review }}</td>
-                </tr>
-            </template>
-            <v-alert slot="no-results" :value="true" color="error" icon="warning">
-               "{{ search }}" 는 존재하지 않습니다.
-            </v-alert>
-          </v-data-table>
+        <v-card color="grey lighten-3" class="mb-5" height="800px">
+          <v-row>
+            <v-col cols="6" sm="12" md="6">
+              <br><br> 
+              <KaKaoMap></KaKaoMap>
+            </v-col>    
+            <v-col cols="6" sm="12" md="6">
+              <v-card-title>
+              Search
+              <v-spacer></v-spacer>
+              <v-text-field
+                v-model="search"
+                append-icon="mdi-magnify"
+                label="Search"
+                single-line
+                hide-details
+              ></v-text-field>
+            </v-card-title>
+            <v-data-table
+              v-model="selectedName"
+              :headers="headers"
+              :items="items"
+              :search="search" 
+            >
+              <template slot="item" slot-scope="props">
+                <tr @click="toggleOnOff(props.item)">
+                <td>{{ props.item.name }}</td>
+                <td class="text-xs-right">{{ props.item.distance }}</td>
+                <td class="text-xs-right">{{ props.item.star }}</td>
+                <td class="text-xs-right">{{ props.item.review }}</td>
+                  </tr>
+              </template>
+              <v-alert slot="no-results" :value="true" color="error" icon="warning">
+                "{{ search }}" 는 존재하지 않습니다.
+              </v-alert>
+            </v-data-table>
+              </v-col>    
+          </v-row>
+          
+          
+          
           <br>
 
+<!--
           <v-card v-if="isStatusOn"
             class="mx-auto elevation-20"
             color="#385F73"
             dark
             style="max-width: 400px;"          
           >
-          <KaKaoMap></KaKaoMap>
             <v-layout justify-space-between>
               <v-flex xs8>
                 <v-card-title primary-title>
@@ -101,6 +112,7 @@
               ></v-rating>
             </v-card-actions>
           </v-card>
+          -->
         </v-card>
         <v-btn color="primary" @click="e6 = 3">Continue</v-btn>
         <v-btn @click="e6 = 1">Back</v-btn>
@@ -180,7 +192,7 @@
             <v-text-field 
                 label="이름" 
                 required 
-                v-model="aniname"
+                
             ></v-text-field>
             </v-col>
 
@@ -248,9 +260,10 @@ import DateTimePicker from "../../src/views/DateTimePicker.vue";
 import KaKaoMap from "../../src/views/map.vue";
 import axios from 'axios'
 export default {
-  name: 'reservation',
   data: function(){
       return {
+        sPlace: this.$store.getters.fnGetPlace,
+
         name: "",
         review: '',
         star: '',
@@ -399,28 +412,22 @@ export default {
         this.userInfo = item;
       },
     hospital(){
-      this.name = "멍냥병원";
-      this.review = "의사쌤 왕친절 !!";
-      this.star = "4.5";
-      this.count = "20";
+      this.sPlace = "동물병원"
+      this.$store.commit('fnSetPlace', this.sPlace);
+      console.log(this.$store.getters.fnGetPlace);
     },
     salon(){
-      this.name = "멍냥미용실";
-      this.review = "완벽한 변신";
-      this.star = "4.7";
-      this.count = "40";
+      this.sPlace = "애견미용실"
+      this.$store.commit('fnSetPlace', "애견미용실");
+      console.log(this.$store.getters.fnGetPlace);
     },
     hotel(){
-      this.name = "멍냥호텔";
-      this.review = "아늑하고 포근해요 ~";
-      this.star = "4.0";
-      this.count = "33";
+      this.sPlace = "애견호텔"
+      this.$store.commit('fnSetPlace', this.sPlace);
     },
     cafe(){
-      this.name = "멍냥카페";
-      this.review = "분위기가 넘 좋네요";
-      this.star = "4.9";
-      this.count = "200";
+      this.sPlace = "애견카페"
+      this.$store.commit('fnSetPlace', this.sPlace);
     },
   }
 }
