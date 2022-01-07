@@ -21,7 +21,7 @@ export default new Vuex.Store({
   },
   getters:{
     fnGetPlace: function(state) {return state.sPlace},
-    fnGetName: function(state) {return state.sName},
+    fnGetName: function(state) {return state.pName},
     fnGetAddress: function(state) {return state.pAddress},
     fnGetNumber: function(state) {return state.pNumber},
   }

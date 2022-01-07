@@ -169,18 +169,20 @@ export default {
     kakao.maps.event.addListener(marker, 'click', function() {
         // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
         console.log(place.place_name, place.address_name, place.phone);
-        this.name = place.place_name;
-        this.address = place.address_name;
-        this.phone = place.phone;
-        this.$store.commit('fnSetName', this.name);
-        this.$store.commit('fnSetAddress', this.address);
-        this.$store.commit('fnSetNumber', this.phone);
-        console.log(this.$store.getters.fnGetName)
+        // this.name = place.place_name;
+        // this.address = place.address_name;
+        // this.phone = place.phone;
+        // this.$store.commit('fnSetName', this.name);
+        // this.$store.commit('fnSetAddress', this.address);
+        // this.$store.commit('fnSetNumber', this.phone);
     });
 
       this.name = place.place_name;
       this.address = place.address_name;
       this.phone = place.phone;
+      this.$store.commit('fnSetName', this.name);
+      this.$store.commit('fnSetAddress', this.address);
+      this.$store.commit('fnSetNumber', this.phone);
   },
 
    },

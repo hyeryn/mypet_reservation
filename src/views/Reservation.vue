@@ -29,7 +29,58 @@
           <v-row>
             <v-col cols="6" sm="12" md="6">
               <br><br> 
-              <KaKaoMap></KaKaoMap>
+              <!--<KaKaoMap></KaKaoMap>-->
+              <div>
+    <div id="map"></div>
+    <div class="button-group">
+      <button @click="placeSearch()">지도에서 위치찾기</button>
+    </div>
+    <v-card 
+            class="mx-auto elevation-20"
+            color="#385F73"
+            dark
+            style="max-width: 400px;"          
+          >
+            <v-layout justify-space-between>
+              <v-flex xs9>
+                <v-card-title primary-title>
+                  <div>
+                    <h3>{{this.$store.getters.fnGetName}}</h3>
+                    
+                    <br>
+                    <h6>주소: {{this.$store.getters.fnGetAddress}}</h6>
+                    <h6>전화번호: {{this.$store.getters.fnGetNumber}}</h6>
+                  
+                  </div>
+                </v-card-title>
+              </v-flex>
+              <v-img
+                class="shrink ma-2"
+                contain
+                height="125px"
+                src="https://cdn.vuetifyjs.com/images/cards/halcyon.png"
+                style="flex-basis: 125px"
+              ></v-img>
+            </v-layout>
+            <v-divider dark></v-divider>
+            <v-card-actions class="pa-3">
+              평점
+              <v-spacer></v-spacer>
+              <span class="grey--text text--lighten-2 caption mr-2">
+                ({{ star }})
+              </span>
+              <v-rating
+                v-model="star"
+                background-color="white"
+                color="yellow accent-4"
+                dense
+                half-increments
+                hover
+                size="18"
+              ></v-rating>
+            </v-card-actions>
+          </v-card>
+  </div>
             </v-col>    
             <v-col cols="6" sm="12" md="6">
               <v-card-title>
@@ -257,16 +308,25 @@
 </template>
 <script>
 import DateTimePicker from "../../src/views/DateTimePicker.vue";
-import KaKaoMap from "../../src/views/map.vue";
+//import KaKaoMap from "../../src/views/map.vue";
 import axios from 'axios'
 export default {
   data: function(){
       return {
         sPlace: this.$store.getters.fnGetPlace,
 
-        name: "",
-        review: '',
-        star: '',
+        markers: [],
+        latitude:[],
+        longitude: [],
+
+        name: '',
+        address: '',
+        phone:'',
+        star: 3,
+
+        // name: "",
+        // review: '',
+        // star: '',
         distance: '',
         time:'',
             selected: {
@@ -298,98 +358,210 @@ export default {
         items: [
         {
           value: false,
-          name: 'Frozen Yogurt',
-          distance: 159,
-          star: 6.0,
-          review: 24,
+          name: '',
+          distance: '',
+          star: '',
+          review: '',
         },
         {
           value: false,
-          name: 'Ice cream sandwich',
-          distance: 159,
-          star: 6.0,
-          review: 24,
+          name: '',
+          distance: '',
+          star: '',
+          review: '',
         },
         {
           value: false,
-          name: 'Eclair',
-          calories: 262,
-          fat: 16.0,
-          carbs: 23,
-          protein: 6.0,
-          iron: '7%'
+          name: '',
+          distance: '',
+          star: '',
+          review: '',
         },
         {
           value: false,
-          name: 'Cupcake',
-          calories: 305,
-          fat: 3.7,
-          carbs: 67,
-          protein: 4.3,
-          iron: '8%'
+          name: '',
+          distance: '',
+          star: '',
+          review: '',
         },
         {
           value: false,
-          name: 'Gingerbread',
-          calories: 356,
-          fat: 16.0,
-          carbs: 49,
-          protein: 3.9,
-          iron: '16%'
+          name: '',
+          distance: '',
+          star: '',
+          review: '',
         },
         {
           value: false,
-          name: 'Jelly bean',
-          calories: 375,
-          fat: 0.0,
-          carbs: 94,
-          protein: 0.0,
-          iron: '0%'
+          name: '',
+          distance: '',
+          star: '',
+          review: '',
         },
         {
           value: false,
-          name: 'Lollipop',
-          calories: 392,
-          fat: 0.2,
-          carbs: 98,
-          protein: 0,
-          iron: '2%'
+          name: '',
+          distance: '',
+          star: '',
+          review: '',
         },
         {
           value: false,
-          name: 'Honeycomb',
-          calories: 408,
-          fat: 3.2,
-          carbs: 87,
-          protein: 6.5,
-          iron: '45%'
+          name: '',
+          distance: '',
+          star: '',
+          review: '',
         },
         {
           value: false,
-          name: 'Donut',
-          calories: 452,
-          fat: 25.0,
-          carbs: 51,
-          protein: 4.9,
-          iron: '22%'
+          name: '',
+          distance: '',
+          star: '',
+          review: '',
         },
         {
           value: false,
-          name: 'KitKat',
-          calories: 518,
-          fat: 26.0,
-          carbs: 65,
-          protein: 7,
-          iron: '6%'
-        }
+          name: '',
+          distance: '',
+          star: '',
+          review: '',
+        },
+        {
+          value: false,
+          name: '',
+          distance: '',
+          star: '',
+          review: '',
+        },
       ]
     }
   },
   components: {
     DateTimePicker,
-    KaKaoMap
+    //KaKaoMap
+  },
+  mounted() {
+    // 접속 위치 얻어오기
+    navigator.geolocation.getCurrentPosition(pos => {
+      this.latitude = pos.coords.latitude; //위도
+      this.longitude = pos.coords.longitude; //경도
+
+      this.markerPositions=kakao.maps.LatLng(this.latitude,this.longitude);
+
+      this.searchOption = {
+        location: new kakao.maps.LatLng(this.latitude,this.longitude),
+        radius: 5000,
+        size: 15
+    };
+
+      if (window.kakao && window.kakao.maps) {
+
+        this.initMap();
+        this.placeSearch();
+
+      } else {
+        const script = document.createElement("script");
+        /* global kakao */
+        script.onload = () => kakao.maps.load(this.initMap);
+        script.src = "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=84ad747d38ba57ab892c06039daaf611";
+        document.head.appendChild(script);
+      }
+
+    }, err => {
+      alert(err.message);
+    })
   },
   methods: {
+    initMap() {
+      const container = document.getElementById("map");
+      const options = {
+        center: new kakao.maps.LatLng(33.450701, 126.570667),
+        level: 5,
+      };
+      this.map = new kakao.maps.Map(container, options);
+      this.displayMarker([[this.latitude, this.longitude]]);
+    },
+
+    displayMarker(markerPositions) {
+    
+      if (this.markers.length > 0) {
+        this.markers.forEach((marker) => marker.setMap(null));
+      }
+      const positions = markerPositions.map(
+        (position) => new kakao.maps.LatLng(...position)
+      );
+      if (positions.length > 0) {
+        this.markers = positions.map(
+          (position) =>
+            new kakao.maps.Marker({
+              map: this.map,
+              position,
+            })
+        );
+        const bounds = positions.reduce(
+          (bounds, latlng) => bounds.extend(latlng),
+          new kakao.maps.LatLngBounds()
+        );
+        this.map.setBounds(bounds);
+      }
+    },
+
+    placeSearch(){
+      var ps = new kakao.maps.services.Places(this.map); 
+      // 키워드로 장소를 검색합니다
+      ps.keywordSearch(this.$store.getters.fnGetPlace, this.placesSearchCB, this.searchOption); 
+    },
+
+    placesSearchCB (data, status) {
+      if (!("geolocation" in navigator)) {
+        return;
+      }
+
+      if (status === kakao.maps.services.Status.OK) {
+
+        // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+        // LatLngBounds 객체에 좌표를 추가합니다
+        var bounds = new kakao.maps.LatLngBounds();
+
+        for (var i=0; i<data.length; i++) {
+            this.displayplaceMarker(data[i]);    
+            bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
+            this.items[i].name = data[i].place_name;
+            //console.log(this.items[i].name);
+        }       
+
+        // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+        this.map.setBounds(bounds);
+      } 
+     },
+
+    displayplaceMarker(place){
+      var marker = new kakao.maps.Marker({
+       map: this.map,
+       position: new kakao.maps.LatLng(place.y, place.x) 
+    });
+
+    // 마커에 클릭이벤트를 등록합니다
+    kakao.maps.event.addListener(marker, 'click', function() {
+        // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
+        console.log(place.place_name, place.address_name, place.phone);
+        // this.name = place.place_name;
+        // this.address = place.address_name;
+        // this.phone = place.phone;
+        // this.$store.commit('fnSetName', this.name);
+        // this.$store.commit('fnSetAddress', this.address);
+        // this.$store.commit('fnSetNumber', this.phone);
+    });
+
+      this.name = place.place_name;
+      this.address = place.address_name;
+      this.phone = place.phone;
+      this.$store.commit('fnSetName', this.name);
+      this.$store.commit('fnSetAddress', this.address);
+      this.$store.commit('fnSetNumber', this.phone);
+  },
+
+   
     Reserv () {
        const reservData = {
                 // 보낼 데이터 정보
@@ -444,5 +616,15 @@ div {
 #colorb {
   background-color: #2A558C;
   color: white;
+}
+#map {
+  width: 400px;
+  height: 400px;
+}
+.button-group {
+  margin: 10px 0px;
+}
+button {
+  margin: 0 3px;
 }
 </style>
