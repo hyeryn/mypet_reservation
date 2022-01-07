@@ -14,11 +14,11 @@
               <v-flex xs9>
                 <v-card-title primary-title>
                   <div>
-                    <h3>{{name}}</h3>
+                    <h3>{{this.$store.getters.fnGetName}}</h3>
                     
                     <br>
-                    <h6>주소: {{address}}</h6>
-                    <h6>전화번호: {{phone}}</h6>
+                    <h6>주소: {{this.$store.getters.fnGetAddress}}</h6>
+                    <h6>전화번호: {{this.$store.getters.fnGetNumber}}</h6>
                   
                   </div>
                 </v-card-title>
@@ -56,7 +56,6 @@
 export default {
   data() {
     return {
-      sPlace: this.$store.getters.fnGetPlace,
       markers: [],
       latitude:[],
       longitude: [],
@@ -170,15 +169,20 @@ export default {
     kakao.maps.event.addListener(marker, 'click', function() {
         // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
         console.log(place.place_name, place.address_name, place.phone);
-        this.name = place.place_name;
-        this.address = place.address_name;
-        this.phone = place.phone;
-        console.log(this.name);
+        // this.name = place.place_name;
+        // this.address = place.address_name;
+        // this.phone = place.phone;
+        // this.$store.commit('fnSetName', this.name);
+        // this.$store.commit('fnSetAddress', this.address);
+        // this.$store.commit('fnSetNumber', this.phone);
     });
 
       this.name = place.place_name;
       this.address = place.address_name;
       this.phone = place.phone;
+      this.$store.commit('fnSetName', this.name);
+      this.$store.commit('fnSetAddress', this.address);
+      this.$store.commit('fnSetNumber', this.phone);
   },
 
    },
