@@ -54,7 +54,6 @@
                         <b-button class="btn btn-block btn-primary"
                             style="font-size: 17px; background-color: #2A558C;"
                             @click="formSubmit"
-                            href="/Home"
                         >
                             로그인
                         </b-button>
@@ -132,12 +131,12 @@ export default {
             const loginFormData = {
                 email: this.loginForm.email,
                 password: this.loginForm.password,
-                checked: this.loginForm.checked
+                //checked: this.loginForm.checked
             }
 
             console.log(loginFormData)
             
-            axios.post('http://34.64.202.151/auth/signup', loginFormData)
+            axios.post('http://34.64.202.151/auth/login', loginFormData)
                 .then(res => console.log(res))
                 .catch(error => console.log(error))
         },
