@@ -12,15 +12,15 @@
             style="max-width: 400px;"          
           >
             <v-layout justify-space-between>
-              <v-flex xs8>
+              <v-flex xs9>
                 <v-card-title primary-title>
                   <div>
-                    <h1>{{name}}</h1>
-                    <!--
-                    <v-spacer></v-spacer>
-                    <div>거리 : {{distance}}</div>
-                    <div>방문자 리뷰 : {{review}}</div>
-                    -->
+                    <h3>{{name}}</h3>
+                    
+                    <br>
+                    <h6>주소: {{address}}</h6>
+                    <h6>전화번호: {{phone}}</h6>
+                  
                   </div>
                 </v-card-title>
               </v-flex>
@@ -62,7 +62,9 @@ export default {
       latitude:[],
       longitude: [],
 
-      name: ''
+      name: '',
+      address: '',
+      phone:''
     };
   },
   mounted() {
@@ -170,8 +172,14 @@ export default {
         // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
         console.log(place.place_name, place.address_name, place.phone);
         this.name = place.place_name;
+        this.address = place.address_name;
+        this.phone = place.phone;
         console.log(this.name);
     });
+
+    this.name = place.place_name;
+    this.address = place.address_name;
+    this.phone = place.phone;
 }
 
    },

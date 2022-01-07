@@ -418,7 +418,7 @@ export default {
     },
     salon(){
       this.sPlace = "애견미용실"
-      this.$store.commit('fnSetPlace', "애견미용실");
+      this.$store.commit('fnSetPlace', this.sPlace);
       console.log(this.$store.getters.fnGetPlace);
     },
     hotel(){
