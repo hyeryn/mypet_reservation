@@ -10,7 +10,7 @@ export default new Vuex.Store({
     pAddress: '',
     pNumber: ''
   },
-  actions:{
+  mutations:{
     fnSetPlace: function(state, payload) {return state.sPlace=payload},
     fnSetName: function(state, payload) {return state.pName=payload},
     fnSetAddress: function(state, payload) {return state.pAddress=payload},
