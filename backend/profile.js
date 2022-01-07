@@ -1,26 +1,17 @@
 const router = require('express').Router();
-const mysql = require('mysql');
-
-// DB 연결
-const con = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'petres',
-    database: 'projectdb',
-    multipleStatements: true
-});
-con.connect();
+var con = require('./db.js');
 
 
 router.post('/pet', function (req, res) {
-    var image = req.body.image;
-    var name = req.body.name;
-    var type = req.body.type;
-    var neutering = req.body.neutering;
+    var image = req.body.imageSrc;
+    var owner = req.body.owner;
+    var name = req.body.aniname;
+    var type = req.body.kind;
+    var neutering = req.body.sex;
     var age = req.body.age;
     var weight = req.body.weight;
-    var breed = req.body.breed;
-
+    var breed = req.body.ani;
+    //console.log(name)
     con.query(`INSERT INTO pet (image, name, type, neutering, age, weight, breed) VALUES (\'${image}\', \'${name}\', \'${type}\', \'${neutering}\',\'${age}\',\'${weight}\',\'${breed}\',);`, (err) => {
         if (err) res.json({ success: false, msg: 'register fail' });
         else res.json({ success: true, msg: 'register success' });

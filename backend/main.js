@@ -2,14 +2,21 @@ const express = require('express');
 const router = express.Router();
 const mysql = require('mysql');
 
-router.get('/', function(req, res){ // 메인 페이지 주소로 수정
-    con.query(`SELECT * FROM diary;`, (err, row) => { // 최신 것만 보이게?
+router.get('/diary', function(req, res){ // 다이어리 페이지 주소로 수정
+    var date = req.body.date;
+    var title = req.body.title;
+    var context = req.body.context;
+    var image = req.body.image;
+    con.query(`INSERT INTO diary (date, title, context, image) VALUES (\'${date}\', \'${title}\',\'${context}\', \'${image}\');`, (err) => {
+        // DB: diary 테이블에 image 추가
+        // front: 제목 입력부분 추가
+        // 작성자 어떻게 추가?
+        
         if (err) {
-            console.log('diary load fail')
+            console.log('diary add fail')
         }
         else{
-            // diary_title, diary_date, diary_context 화면에 뿌리기
-            console.log('diary load success')
+            console.log('diary add success')
         }
     });
 })
