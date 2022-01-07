@@ -2,8 +2,7 @@
   <div>
     <div id="map"></div>
     <div class="button-group">
-      {{sPlace + '는 장소'}}
-      <button @click="placeSearch()">검색</button>
+      <button @click="placeSearch()">지도에서 위치찾기</button>
     </div>
     <v-card 
             class="mx-auto elevation-20"
@@ -64,7 +63,8 @@ export default {
 
       name: '',
       address: '',
-      phone:''
+      phone:'',
+      star: 3
     };
   },
   mounted() {
@@ -135,9 +135,8 @@ export default {
 
     placeSearch(){
       var ps = new kakao.maps.services.Places(this.map); 
-      console.log(this.sPlace);
       // 키워드로 장소를 검색합니다
-      ps.keywordSearch('동물병원', this.placesSearchCB, this.searchOption); 
+      ps.keywordSearch(this.$store.getters.fnGetPlace, this.placesSearchCB, this.searchOption); 
     },
 
     placesSearchCB (data, status) {
@@ -177,10 +176,10 @@ export default {
         console.log(this.name);
     });
 
-    this.name = place.place_name;
-    this.address = place.address_name;
-    this.phone = place.phone;
-}
+      this.name = place.place_name;
+      this.address = place.address_name;
+      this.phone = place.phone;
+  },
 
    },
   };
