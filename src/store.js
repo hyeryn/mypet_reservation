@@ -16,6 +16,9 @@ export default new Vuex.Store({
     fnSetAddress: function(state, payload) {return state.pAddress=payload},
     fnSetNumber: function(state, payload) {return state.pNumber=payload},
   },
+  actions: {
+
+  },
   getters:{
     fnGetPlace: function(state) {return state.sPlace},
     fnGetName: function(state) {return state.sName},

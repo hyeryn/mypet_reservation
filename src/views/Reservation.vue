@@ -293,7 +293,7 @@ export default {
           },
           { text: '거리', value: 'distance' },
           { text: '평점', value: 'star' },
-          { text: '리뷰수', value: 'review' },
+          { text: '리뷰', value: 'review' },
         ],
         items: [
         {
