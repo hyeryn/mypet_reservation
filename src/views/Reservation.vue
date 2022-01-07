@@ -424,10 +424,12 @@ export default {
     hotel(){
       this.sPlace = "애견호텔"
       this.$store.commit('fnSetPlace', this.sPlace);
+      console.log(this.$store.getters.fnGetPlace);
     },
     cafe(){
       this.sPlace = "애견카페"
       this.$store.commit('fnSetPlace', this.sPlace);
+      console.log(this.$store.getters.fnGetPlace);
     },
   }
 }
