@@ -16,11 +16,10 @@ router.post('/reservation', function (req, res) { // 하위 링크 수정
         if (err) res.json({ success: false, msg: 'service save fail' });
         else{
             res.json({ success: true, msg: 'service save success' });
-            tmp_service = result1.insertId;
 
-            con.query(`INSERT INTO reservation (date, svc_id, client_id) VALUES (\'${date}\', \'${tmp_service}\',\'${user_id}\');`, (err) => {
-                if (err) res.json({ success: false, msg: 'res fail' });
-                else res.json({ success: true, msg: 'res success' });
+            con.query(`INSERT INTO reservation (date, svc_id, client_id) VALUES (\'${date}\', \'${result1.insertId}\',\'${user_id}\');`, (err) => {
+                if (err) res.json({ success: false, msg: 'reservation save fail' });
+                else res.json({ success: true, msg: 'reservation save success' });
             });
         }
     });    
