@@ -355,86 +355,93 @@ export default {
           { text: '평점', value: 'star' },
           { text: '리뷰', value: 'review' },
         ],
-        items: [
-        {
-          value: false,
-          name: '',
-          distance: '',
-          star: '',
-          review: '',
-        },
-        {
-          value: false,
-          name: '',
-          distance: '',
-          star: '',
-          review: '',
-        },
-        {
-          value: false,
-          name: '',
-          distance: '',
-          star: '',
-          review: '',
-        },
-        {
-          value: false,
-          name: '',
-          distance: '',
-          star: '',
-          review: '',
-        },
-        {
-          value: false,
-          name: '',
-          distance: '',
-          star: '',
-          review: '',
-        },
-        {
-          value: false,
-          name: '',
-          distance: '',
-          star: '',
-          review: '',
-        },
-        {
-          value: false,
-          name: '',
-          distance: '',
-          star: '',
-          review: '',
-        },
-        {
-          value: false,
-          name: '',
-          distance: '',
-          star: '',
-          review: '',
-        },
-        {
-          value: false,
-          name: '',
-          distance: '',
-          star: '',
-          review: '',
-        },
-        {
-          value: false,
-          name: '',
-          distance: '',
-          star: '',
-          review: '',
-        },
-        {
-          value: false,
-          name: '',
-          distance: '',
-          star: '',
-          review: '',
-        },
-      ]
-    }
+         items: [
+    //     {
+    //       value: false,
+    //       name: '',
+    //       distance: '',
+    //       star: '',
+    //       review: '',
+    //     },
+    //     {
+    //       value: false,
+    //       name: '',
+    //       distance: '',
+    //       star: '',
+    //       review: '',
+    //     },
+    //     {
+    //       value: false,
+    //       name: '',
+    //       distance: '',
+    //       star: '',
+    //       review: '',
+    //     },
+    //     {
+    //       value: false,
+    //       name: '',
+    //       distance: '',
+    //       star: '',
+    //       review: '',
+    //     },
+    //     {
+    //       value: false,
+    //       name: '',
+    //       distance: '',
+    //       star: '',
+    //       review: '',
+    //     },
+    //     {
+    //       value: false,
+    //       name: '',
+    //       distance: '',
+    //       star: '',
+    //       review: '',
+    //     },
+    //     {
+    //       value: false,
+    //       name: '',
+    //       distance: '',
+    //       star: '',
+    //       review: '',
+    //     },
+    //     {
+    //       value: false,
+    //       name: '',
+    //       distance: '',
+    //       star: '',
+    //       review: '',
+    //     },
+    //     {
+    //       value: false,
+    //       name: '',
+    //       distance: '',
+    //       star: '',
+    //       review: '',
+    //     },
+    //     {
+    //       value: false,
+    //       name: '',
+    //       distance: '',
+    //       star: '',
+    //       review: '',
+    //     },
+    //     {
+    //       value: false,
+    //       name: '',
+    //       distance: '',
+    //       star: '',
+    //       review: '',
+    //     },
+       ],
+      newPlace: {
+        value: false,
+        name: '',
+        distance:'', 
+        star:'', 
+        review:'',
+      }
+     }
   },
   components: {
     DateTimePicker,
@@ -526,8 +533,16 @@ export default {
         for (var i=0; i<data.length; i++) {
             this.displayplaceMarker(data[i]);    
             bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
-            this.items[i].name = data[i].place_name;
-            //console.log(this.items[i].name);
+            
+            //this.items[i].name = data[i].place_name;
+            //this.items[i].distance = 
+            //Math.sqrt(Math.pow(this.latitude-data[i].x,2)+Math.pow(this.longitude-data[i].y,2));
+            //this.items.push({"name" : data[i].place_name});
+            this.newPlace.name = data[i].place_name;
+            this.newPlace.distance = 
+              Math.sqrt(Math.pow(this.latitude-data[i].x,2)+Math.pow(this.longitude-data[i].y,2));
+            this.items.push(this.newPlace);
+            console.log(this.newPlace.name);
         }       
 
         // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
