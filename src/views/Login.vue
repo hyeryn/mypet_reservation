@@ -124,7 +124,6 @@ export default {
                 .then(((res) => {
                             console.log(res.data.result[0].id),
                             console.log(res.data.result[0].nickname),
-                            console.log(res.nickname),
                             this.$store.commit('fnSetId', res.data.result[0].id),
                             this.$store.commit('fnSetNickName', res.data.result[0].nickname)
                         }
