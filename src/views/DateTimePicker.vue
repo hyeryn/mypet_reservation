@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+//import axios from 'axios'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 export default {
   name: "DateTimePicker",
@@ -41,14 +41,7 @@ export default {
   methods: {
     set() {
       this.$refs.dialog.save(this.date);
-       const dateData = {
-                date: this.date,
-            }
-            console.log(dateData)
-            
-            axios.post('http://34.64.202.151/profile/pet', dateData)
-                .then(res => console.log(res))
-                .catch(error => console.log(error))
+      this.$store.commit('fnSetDate', this.date);
     }
   },
 }
