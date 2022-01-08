@@ -104,7 +104,7 @@
               :search="search" 
             >
               <template slot="item" slot-scope="props">
-                <tr>
+                <tr @click="reservationplace(props.item)">
                 <td>{{ props.item.name }}</td>
                 <td class="text-xs-right">{{ props.item.distance }}</td>
                 <td class="text-xs-right">{{ props.item.star }}</td>
@@ -296,8 +296,6 @@ export default {
         selectedName:[],
         search:'',
 
-        isStatusOn:false,
-
         headers: [
           {
             text: '이름',
@@ -310,83 +308,6 @@ export default {
           { text: '리뷰', value: 'review' },
         ],
          items: [
-    //     {
-    //       value: false,
-    //       name: '',
-    //       distance: '',
-    //       star: '',
-    //       review: '',
-    //     },
-    //     {
-    //       value: false,
-    //       name: '',
-    //       distance: '',
-    //       star: '',
-    //       review: '',
-    //     },
-    //     {
-    //       value: false,
-    //       name: '',
-    //       distance: '',
-    //       star: '',
-    //       review: '',
-    //     },
-    //     {
-    //       value: false,
-    //       name: '',
-    //       distance: '',
-    //       star: '',
-    //       review: '',
-    //     },
-    //     {
-    //       value: false,
-    //       name: '',
-    //       distance: '',
-    //       star: '',
-    //       review: '',
-    //     },
-    //     {
-    //       value: false,
-    //       name: '',
-    //       distance: '',
-    //       star: '',
-    //       review: '',
-    //     },
-    //     {
-    //       value: false,
-    //       name: '',
-    //       distance: '',
-    //       star: '',
-    //       review: '',
-    //     },
-    //     {
-    //       value: false,
-    //       name: '',
-    //       distance: '',
-    //       star: '',
-    //       review: '',
-    //     },
-    //     {
-    //       value: false,
-    //       name: '',
-    //       distance: '',
-    //       star: '',
-    //       review: '',
-    //     },
-    //     {
-    //       value: false,
-    //       name: '',
-    //       distance: '',
-    //       star: '',
-    //       review: '',
-    //     },
-    //     {
-    //       value: false,
-    //       name: '',
-    //       distance: '',
-    //       star: '',
-    //       review: '',
-    //     },
        ],
       newPlace: {
         value: false,
@@ -394,6 +315,8 @@ export default {
         distance:'', 
         star:'', 
         review:'',
+        address:'',
+        phone:'',
       }
      }
   },
@@ -502,7 +425,9 @@ export default {
                 name: data[i].place_name,
                 distance: dis,
                 star:'3', 
-                review:'263',});
+                review:'263',
+                address:data[i].address_name,
+                number:data[i].phone});
             console.log(this.newPlace.name);
         }       
 
@@ -511,10 +436,10 @@ export default {
       } 
      },
 
-     Placehere(){
-    this.$store.commit('fnSetName', this.name);
-      this.$store.commit('fnSetAddress', this.address);
-      this.$store.commit('fnSetNumber', this.phone);
+     Placehere(a,b,c){
+      this.$store.commit('fnSetName', a);
+      this.$store.commit('fnSetAddress', b);
+      this.$store.commit('fnSetNumber', c);
   },
 
     displayplaceMarker(place){
@@ -530,38 +455,35 @@ export default {
         this.name = place.place_name;
         this.address = place.address_name;
         this.phone = place.phone;
-        this.Placehere();
-        // this.$store.commit('fnSetName', this.name);
-        // this.$store.commit('fnSetAddress', this.address);
-        // this.$store.commit('fnSetNumber', this.phone);
+        this.Placehere(this.name, this.address, this.phone);
     });
-
-      // this.name = place.place_name;
-      // this.address = place.address_name;
-      // this.phone = place.phone;
-      // this.$store.commit('fnSetName', this.name);
-      // this.$store.commit('fnSetAddress', this.address);
-      // this.$store.commit('fnSetNumber', this.phone);
   },
    
     Reserv () {
        const reservData = {
-                // 보낼 데이터 정보
+                place: this.name,
+                date: this.$store.getters.fnGetDate,
+                time: this.time,
+                user: this.user,
+                pet: this.pet
             }
             console.log(reservData)
             
-            axios.post('http://34.64.202.151/profile/pet', reservData)
+            axios.post('http://34.64.202.151/reservation', reservData)
                 .then(res => console.log(res))
                 .catch(error => console.log(error))
     },
 
-    toggleOnOff(a) {
-      this.isStatusOn = !this.isStatusOn;
+    reservationplace(a) {
+      console.log('예약중')
       this.name = a.name;
-      this.review = a.review;
-      this.star = a.star;
-      this.count = a.count;
+      this.address = a.address;
+      this.phone = a.number;
+      this.$store.commit('fnSetName', this.name);
+      this.$store.commit('fnSetAddress', this.address);
+      this.$store.commit('fnSetNumber', this.phone);
     },
+
     handleClick(item) {
         this.userInfo = item;
       },
@@ -603,10 +525,10 @@ div {
   width: 400px;
   height: 400px;
 }
-.button-group {
+/* .button-group {
   margin: 10px 0px;
 }
 button {
   margin: 0 3px;
-}
+} */
 </style>

@@ -8,13 +8,17 @@ export default new Vuex.Store({
     sPlace: '',
     pName: '',
     pAddress: '',
-    pNumber: ''
+    pNumber: '',
+
+    sTime:''
   },
   mutations:{
     fnSetPlace: function(state, payload) {return state.sPlace=payload},
     fnSetName: function(state, payload) {return state.pName=payload},
     fnSetAddress: function(state, payload) {return state.pAddress=payload},
     fnSetNumber: function(state, payload) {return state.pNumber=payload},
+
+    fnSetDate: function(state, payload) {return state.sTime=payload},
   },
   actions: {
 
@@ -24,5 +28,7 @@ export default new Vuex.Store({
     fnGetName: function(state) {return state.pName},
     fnGetAddress: function(state) {return state.pAddress},
     fnGetNumber: function(state) {return state.pNumber},
+
+    fnGetDate: function(state) {return state.sTime},
   }
 })
