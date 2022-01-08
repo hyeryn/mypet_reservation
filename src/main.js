@@ -3,6 +3,7 @@ import App from './App.vue'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import router from './router'
 import store from './store'
+import store2 from './vuex/store' // vuex 저장소 추가
 
 import VueKakaoSdk from 'vue-kakao-sdk'
 const apiKey = '84ad747d38ba57ab892c06039daaf611'
@@ -20,6 +21,10 @@ import vuetify from './plugins/vuetify'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faPaw, faSearch, faUserSecret } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
+
+
+
 
 Vue.config.productionTip = false
 
