@@ -410,20 +410,25 @@ export default {
         for (var i=0; i<data.length; i++) {
             this.displayplaceMarker(data[i]);    
             bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
-            
-            //this.items[i].name = data[i].place_name;
-            //this.items[i].distance = 
-            //Math.sqrt(Math.pow(this.latitude-data[i].x,2)+Math.pow(this.longitude-data[i].y,2));
-            //this.items.push({"name" : data[i].place_name});
+
+            var radLat1 = Math.PI * this.latitude / 180;
+            var radLat2 = Math.PI * data[i].y / 180;
+            var theta = this.longitude - data[i].x;
+            var radTheta = Math.PI * theta / 180;
+            var dist = Math.sin(radLat1) * Math.sin(radLat2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.cos(radTheta);
+            if (dist > 1)
+                dist = 1;
+
+            dist = Math.acos(dist);
+            dist = dist * 180 / Math.PI;
+            dist = dist * 60 * 1.1515 * 1.609344 * 1000;
+            if (dist < 100) dist = Math.round(dist / 10) * 10;
+            else dist = Math.round(dist / 100) * 100;
+
             this.newPlace.name = data[i].place_name;
-            this.newPlace.distance = 
-              Math.sqrt(Math.pow(this.latitude-data[i].x,2)+Math.pow(this.longitude-data[i].y,2));
-            
-            var distance = String(Math.sqrt(Math.pow(this.latitude-data[i].x,2)+Math.pow(this.longitude-data[i].y,2)));
-            var dis = distance.substring(4,7);
             this.items.push({value: false,
                 name: data[i].place_name,
-                distance: dis,
+                distance: dist+'m',
                 star:'3', 
                 review:'263',
                 address:data[i].address_name,
