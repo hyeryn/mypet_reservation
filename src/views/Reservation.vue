@@ -28,13 +28,16 @@
         <v-card color="grey lighten-3" class="mb-5" height="800px">
           <v-row>
             <v-col cols="6" sm="12" md="6">
-              <br><br> 
+              
               <!--<KaKaoMap></KaKaoMap>-->
               <div>
-    <div id="map"></div>
+
     <div class="button-group">
       <button @click="placeSearch()">지도에서 위치찾기</button>
     </div>
+    <div id="map"></div>
+    <br><br>
+
     <v-card 
             class="mx-auto elevation-20"
             color="#385F73"
@@ -58,7 +61,7 @@
                 class="shrink ma-2"
                 contain
                 height="125px"
-                src="https://cdn.vuetifyjs.com/images/cards/halcyon.png"
+                src="https://blog.hmgjournal.com/images/contents/article/201603211108-Reissue-pet-family-01.jpg"
                 style="flex-basis: 125px"
               ></v-img>
             </v-layout>
@@ -101,7 +104,7 @@
               :search="search" 
             >
               <template slot="item" slot-scope="props">
-                <tr @click="toggleOnOff(props.item)">
+                <tr @click="reservationplace(props.item)">
                 <td>{{ props.item.name }}</td>
                 <td class="text-xs-right">{{ props.item.distance }}</td>
                 <td class="text-xs-right">{{ props.item.star }}</td>
@@ -114,56 +117,7 @@
             </v-data-table>
               </v-col>    
           </v-row>
-          
-          
-          
           <br>
-
-<!--
-          <v-card v-if="isStatusOn"
-            class="mx-auto elevation-20"
-            color="#385F73"
-            dark
-            style="max-width: 400px;"          
-          >
-            <v-layout justify-space-between>
-              <v-flex xs8>
-                <v-card-title primary-title>
-                  <div>
-                    <h1>{{name}}</h1>
-                    <v-spacer></v-spacer>
-                    <div>거리 : {{distance}}</div>
-                    <div>방문자 리뷰 : {{review}}</div>
-                  </div>
-                </v-card-title>
-              </v-flex>
-              <v-img
-                class="shrink ma-2"
-                contain
-                height="125px"
-                src="https://cdn.vuetifyjs.com/images/cards/halcyon.png"
-                style="flex-basis: 125px"
-              ></v-img>
-            </v-layout>
-            <v-divider dark></v-divider>
-            <v-card-actions class="pa-3">
-              평점
-              <v-spacer></v-spacer>
-              <span class="grey--text text--lighten-2 caption mr-2">
-                ({{ star }})
-              </span>
-              <v-rating
-                v-model="star"
-                background-color="white"
-                color="yellow accent-4"
-                dense
-                half-increments
-                hover
-                size="18"
-              ></v-rating>
-            </v-card-actions>
-          </v-card>
-          -->
         </v-card>
         <v-btn color="primary" @click="e6 = 3">Continue</v-btn>
         <v-btn @click="e6 = 1">Back</v-btn>
@@ -342,8 +296,6 @@ export default {
         selectedName:[],
         search:'',
 
-        isStatusOn:false,
-
         headers: [
           {
             text: '이름',
@@ -356,83 +308,6 @@ export default {
           { text: '리뷰', value: 'review' },
         ],
          items: [
-    //     {
-    //       value: false,
-    //       name: '',
-    //       distance: '',
-    //       star: '',
-    //       review: '',
-    //     },
-    //     {
-    //       value: false,
-    //       name: '',
-    //       distance: '',
-    //       star: '',
-    //       review: '',
-    //     },
-    //     {
-    //       value: false,
-    //       name: '',
-    //       distance: '',
-    //       star: '',
-    //       review: '',
-    //     },
-    //     {
-    //       value: false,
-    //       name: '',
-    //       distance: '',
-    //       star: '',
-    //       review: '',
-    //     },
-    //     {
-    //       value: false,
-    //       name: '',
-    //       distance: '',
-    //       star: '',
-    //       review: '',
-    //     },
-    //     {
-    //       value: false,
-    //       name: '',
-    //       distance: '',
-    //       star: '',
-    //       review: '',
-    //     },
-    //     {
-    //       value: false,
-    //       name: '',
-    //       distance: '',
-    //       star: '',
-    //       review: '',
-    //     },
-    //     {
-    //       value: false,
-    //       name: '',
-    //       distance: '',
-    //       star: '',
-    //       review: '',
-    //     },
-    //     {
-    //       value: false,
-    //       name: '',
-    //       distance: '',
-    //       star: '',
-    //       review: '',
-    //     },
-    //     {
-    //       value: false,
-    //       name: '',
-    //       distance: '',
-    //       star: '',
-    //       review: '',
-    //     },
-    //     {
-    //       value: false,
-    //       name: '',
-    //       distance: '',
-    //       star: '',
-    //       review: '',
-    //     },
        ],
       newPlace: {
         value: false,
@@ -440,6 +315,8 @@ export default {
         distance:'', 
         star:'', 
         review:'',
+        address:'',
+        phone:'',
       }
      }
   },
@@ -533,15 +410,29 @@ export default {
         for (var i=0; i<data.length; i++) {
             this.displayplaceMarker(data[i]);    
             bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
-            
-            //this.items[i].name = data[i].place_name;
-            //this.items[i].distance = 
-            //Math.sqrt(Math.pow(this.latitude-data[i].x,2)+Math.pow(this.longitude-data[i].y,2));
-            //this.items.push({"name" : data[i].place_name});
+
+            var radLat1 = Math.PI * this.latitude / 180;
+            var radLat2 = Math.PI * data[i].y / 180;
+            var theta = this.longitude - data[i].x;
+            var radTheta = Math.PI * theta / 180;
+            var dist = Math.sin(radLat1) * Math.sin(radLat2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.cos(radTheta);
+            if (dist > 1)
+                dist = 1;
+
+            dist = Math.acos(dist);
+            dist = dist * 180 / Math.PI;
+            dist = dist * 60 * 1.1515 * 1.609344 * 1000;
+            if (dist < 100) dist = Math.round(dist / 10) * 10;
+            else dist = Math.round(dist / 100) * 100;
+
             this.newPlace.name = data[i].place_name;
-            this.newPlace.distance = 
-              Math.sqrt(Math.pow(this.latitude-data[i].x,2)+Math.pow(this.longitude-data[i].y,2));
-            this.items.push(this.newPlace);
+            this.items.push({value: false,
+                name: data[i].place_name,
+                distance: dist+'m',
+                star:'3', 
+                review:'263',
+                address:data[i].address_name,
+                number:data[i].phone});
             console.log(this.newPlace.name);
         }       
 
@@ -549,6 +440,12 @@ export default {
         this.map.setBounds(bounds);
       } 
      },
+
+     Placehere(a,b,c){
+      this.$store.commit('fnSetName', a);
+      this.$store.commit('fnSetAddress', b);
+      this.$store.commit('fnSetNumber', c);
+  },
 
     displayplaceMarker(place){
       var marker = new kakao.maps.Marker({
@@ -560,41 +457,38 @@ export default {
     kakao.maps.event.addListener(marker, 'click', function() {
         // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
         console.log(place.place_name, place.address_name, place.phone);
-        // this.name = place.place_name;
-        // this.address = place.address_name;
-        // this.phone = place.phone;
-        // this.$store.commit('fnSetName', this.name);
-        // this.$store.commit('fnSetAddress', this.address);
-        // this.$store.commit('fnSetNumber', this.phone);
+        this.name = place.place_name;
+        this.address = place.address_name;
+        this.phone = place.phone;
+        this.Placehere(this.name, this.address, this.phone);
     });
-
-      this.name = place.place_name;
-      this.address = place.address_name;
-      this.phone = place.phone;
-      this.$store.commit('fnSetName', this.name);
-      this.$store.commit('fnSetAddress', this.address);
-      this.$store.commit('fnSetNumber', this.phone);
   },
-
    
     Reserv () {
-      const reservData = {
-                // 보낼 데이터 정보
+       const reservData = {
+                place: this.name,
+                date: this.$store.getters.fnGetDate,
+                time: this.time,
+                user: this.user,
+                pet: this.pet
             }
             console.log(reservData)
             
-            axios.post('http://34.64.202.151/profile/pet', reservData)
+            axios.post('http://34.64.202.151/reservation', reservData)
                 .then(res => console.log(res))
                 .catch(error => console.log(error))
     },
 
-    toggleOnOff(a) {
-      this.isStatusOn = !this.isStatusOn;
+    reservationplace(a) {
+      console.log('예약중')
       this.name = a.name;
-      this.review = a.review;
-      this.star = a.star;
-      this.count = a.count;
+      this.address = a.address;
+      this.phone = a.number;
+      this.$store.commit('fnSetName', this.name);
+      this.$store.commit('fnSetAddress', this.address);
+      this.$store.commit('fnSetNumber', this.phone);
     },
+
     handleClick(item) {
         this.userInfo = item;
       },
@@ -636,10 +530,10 @@ div {
   width: 400px;
   height: 400px;
 }
-.button-group {
+/* .button-group {
   margin: 10px 0px;
 }
 button {
   margin: 0 3px;
-}
+} */
 </style>
