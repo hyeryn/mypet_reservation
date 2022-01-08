@@ -1,60 +1,49 @@
 <template>
-<b-container>
+<div class="login">
+    <b-container>
         <div style="height: 150px;"></div>
         <h1 class="text-center mb-5">로그인</h1>
-        <form>
+        <form  class="loginform">
             <div class=" row mx-5 justify-content-around">
                 <div class="col-lg-3 col-sm-0"></div>
                 <div class="col-lg-6 col-sm-12">
                     <b-form>
                         <b-form-group
-                            id="input-group-1"
+                            label-for="memberEmailInput"
                             label="이메일"
-                            label-for="input-1"
                             description="We'll never share your email with anyone else."
                             class="my-5"
                         >
                             <b-form-input
-                            id="input-1"
-                            v-model="loginForm.email"
-                            type="email"
-                            placeholder="이메일을 입력하세요."
-                            required
+                                class="input_text"
+                                id="memberEmailInput"
+                                ref="memberEmailInput"
+                                v-model="loginForm.email"
+                                type="email"
+                                placeholder="이메일을 입력하세요."
                             ></b-form-input>
                         </b-form-group>
 
                         <b-form-group
-                            id="input-group-2"
                             label="비밀번호"
-                            label-for="input-2"
+                            label-for="memberPasswordInput"
                             description="Your password must be 8-20 characters long, contain letters and numbers, and must not
                             contain spaces, special characters, or emoji."
                             class="my-5"
                         >
                             <b-form-input
-                            id="input-2"
-                            v-model="loginForm.password"
-                            type="password"
-                            placeholder="비밀번호를 입력하세요."
-                            required
+                                class="input_text"
+                                id="memberPasswordInput"
+                                ref="memberPasswordInput"
+                                v-model="loginForm.password"
+                                type="password"
+                                placeholder="비밀번호를 입력하세요."
                             ></b-form-input>
-                        </b-form-group>
-                        <b-form-group id="input-group-4" v-slot="{ ariaDescribedby }">
-                            <b-form-checkbox-group
-                                v-model="loginForm.checked"
-                                id="checkboxes-4"
-                                :aria-describedby="ariaDescribedby"
-                                >
-                                <b-form-checkbox value="remember">아이디 기억하기</b-form-checkbox>
-                            </b-form-checkbox-group>
                         </b-form-group>
                     </b-form>
 
                     <div class="row my-4 mx-1 justify-content-around">
-                        <b-button class="btn btn-block btn-primary"
-                            style="font-size: 17px; background-color: #2A558C;"
-                            @click="formSubmit"
-                        >
+                        <b-button @click.prevent="formsubmit" class="button blue" style="font-size: 17px; background-color: #2A558C;">
                             로그인
                         </b-button>
                     </div>
@@ -62,25 +51,20 @@
                         <pre class="m-0">{{ loginForm }}</pre>
                     </b-card>
                     <div>
-                        <a class="row my-2"  style="font-size:small; color: rgb(0, 100, 13);">회원가입 하기</a>
-                        <a class="row my-2" style="font-size:small; color: rgb(0, 100, 13);">비밀번호 찾기</a>
+                        <a href="#" class="row my-2 text-muted smail">회원가입 하기</a>
+                        <a href="#" class="row my-2 text-muted smail">비밀번호 찾기</a>
                     </div>
                 </div>
-                
-
                 <div class="col-lg-3 col-sm-0"></div>
             </div>
         </form>
-        
+
         <div class=" row mx-5 my-4 justify-content-around">
             <div class="col-lg-3 col-sm-0"></div>
-            
             <div class="col-lg-3 col-sm-0"></div>
         </div>
         <div style="height: 30px;"></div>
-
         <hr>
-
         <div style="height: 50px;"></div>
         <div class="row my-3 justify-content-around">
             <v-btn outlined color="#2A558C" style="font-size: 15px; width: 400px;">
@@ -103,19 +87,21 @@
             </div>
         </a>
         <div style="height: 50px;"></div>
-    </b-container>    
+    </b-container> 
+</div>  
 </template>
 
 <script>
 import axios from 'axios'
 
 export default {
-    data() {
+    name: 'Login',
+    data : function() {
     return {
         loginForm: {
             email: '',
             password: '',
-            checked: []
+            errorMessage: '',
         },
     }
     },
@@ -126,18 +112,24 @@ export default {
                 console.warn(response);
                 this.result = response.data
             })
-        },
-        formSubmit () {
+        },formsubmit () {
             const loginFormData = {
                 email: this.loginForm.email,
                 password: this.loginForm.password,
-                //checked: this.loginForm.checked
             }
 
             console.log(loginFormData)
             
             axios.post('http://34.64.202.151/auth/login', loginFormData)
-                .then(res => console.log(res))
+                .then(((res) => {
+                            console.log(res.data.result[0].id),
+                            console.log(res.data.result[0].nickname),
+                            console.log(res.nickname),
+                            this.$store.commit('fnSetId', res.data.result[0].id),
+                            this.$store.commit('fnSetNickName', res.data.result[0].nickname)
+                        }
+                    )
+                )
                 .catch(error => console.log(error))
         },
         kakaoLogin() {

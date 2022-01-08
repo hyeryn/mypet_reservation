@@ -33,8 +33,13 @@
 
                 <b-collapse id="nav-collapse" is-nav>
                     <v-autocomplete class="mx-3"></v-autocomplete>
-                    <v-btn color="#68788C" elevation="2" class="mx-1 fw-bold" type="submit" href="/Login"><span style="color:white">로그인</span></v-btn>
-                    <v-btn color="#68788C" elevation="2" class="mx-1 fw-bold" type="submit" href="/Signup"><span style="color:white">회원가입</span></v-btn>
+                    <div v-if="loginData.nicname == ''">
+                        <v-btn color="#68788C" elevation="2" class="mx-1 fw-bold" type="submit" href="/Login"><span style="color:white">로그인</span></v-btn>
+                        <v-btn color="#68788C" elevation="2" class="mx-1 fw-bold" type="submit" href="/Signup"><span style="color:white">회원가입</span></v-btn>
+                    </div>
+                    <div v-else>
+                        <p>{{ loginData.nicname }}</p>
+                    </div>
                 </b-collapse>
             </div>
         </nav>
@@ -44,5 +49,20 @@
 <script>
 export default {
     name: "header",
+    data : function() {
+    return {
+        loginData: {
+            uid: '',
+            nicname: '',
+        },
+
+        methods: {
+            MyData : function() {
+                this.loginData.uid = this.$store.getters.fnGetId,
+                this.loginData.nicname = this.$store.getters.fnGetNickName
+            }
+        }
+    }
+    }
 }
 </script>
