@@ -12,6 +12,8 @@ import KakaoMap from './views/map'
 
 Vue.use(VueRouter)
 
+
+
 const router = new VueRouter({
     mode: "history",
     routes: [
@@ -26,5 +28,6 @@ const router = new VueRouter({
         //{path: "/SMap", component: SMap}
     ]
 })
+
 
 export default router;

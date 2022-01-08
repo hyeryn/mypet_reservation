@@ -578,7 +578,7 @@ export default {
 
    
     Reserv () {
-       const reservData = {
+      const reservData = {
                 // 보낼 데이터 정보
             }
             console.log(reservData)
