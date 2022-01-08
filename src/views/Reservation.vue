@@ -28,13 +28,16 @@
         <v-card color="grey lighten-3" class="mb-5" height="800px">
           <v-row>
             <v-col cols="6" sm="12" md="6">
-              <br><br> 
+              
               <!--<KaKaoMap></KaKaoMap>-->
               <div>
-    <div id="map"></div>
+
     <div class="button-group">
       <button @click="placeSearch()">지도에서 위치찾기</button>
     </div>
+    <div id="map"></div>
+    <br><br>
+
     <v-card 
             class="mx-auto elevation-20"
             color="#385F73"
@@ -58,7 +61,7 @@
                 class="shrink ma-2"
                 contain
                 height="125px"
-                src="https://cdn.vuetifyjs.com/images/cards/halcyon.png"
+                src="https://blog.hmgjournal.com/images/contents/article/201603211108-Reissue-pet-family-01.jpg"
                 style="flex-basis: 125px"
               ></v-img>
             </v-layout>
@@ -101,7 +104,7 @@
               :search="search" 
             >
               <template slot="item" slot-scope="props">
-                <tr @click="toggleOnOff(props.item)">
+                <tr>
                 <td>{{ props.item.name }}</td>
                 <td class="text-xs-right">{{ props.item.distance }}</td>
                 <td class="text-xs-right">{{ props.item.star }}</td>
@@ -114,56 +117,7 @@
             </v-data-table>
               </v-col>    
           </v-row>
-          
-          
-          
           <br>
-
-<!--
-          <v-card v-if="isStatusOn"
-            class="mx-auto elevation-20"
-            color="#385F73"
-            dark
-            style="max-width: 400px;"          
-          >
-            <v-layout justify-space-between>
-              <v-flex xs8>
-                <v-card-title primary-title>
-                  <div>
-                    <h1>{{name}}</h1>
-                    <v-spacer></v-spacer>
-                    <div>거리 : {{distance}}</div>
-                    <div>방문자 리뷰 : {{review}}</div>
-                  </div>
-                </v-card-title>
-              </v-flex>
-              <v-img
-                class="shrink ma-2"
-                contain
-                height="125px"
-                src="https://cdn.vuetifyjs.com/images/cards/halcyon.png"
-                style="flex-basis: 125px"
-              ></v-img>
-            </v-layout>
-            <v-divider dark></v-divider>
-            <v-card-actions class="pa-3">
-              평점
-              <v-spacer></v-spacer>
-              <span class="grey--text text--lighten-2 caption mr-2">
-                ({{ star }})
-              </span>
-              <v-rating
-                v-model="star"
-                background-color="white"
-                color="yellow accent-4"
-                dense
-                half-increments
-                hover
-                size="18"
-              ></v-rating>
-            </v-card-actions>
-          </v-card>
-          -->
         </v-card>
         <v-btn color="primary" @click="e6 = 3">Continue</v-btn>
         <v-btn @click="e6 = 1">Back</v-btn>
@@ -541,7 +495,14 @@ export default {
             this.newPlace.name = data[i].place_name;
             this.newPlace.distance = 
               Math.sqrt(Math.pow(this.latitude-data[i].x,2)+Math.pow(this.longitude-data[i].y,2));
-            this.items.push(this.newPlace);
+            
+            var distance = String(Math.sqrt(Math.pow(this.latitude-data[i].x,2)+Math.pow(this.longitude-data[i].y,2)));
+            var dis = distance.substring(4,7);
+            this.items.push({value: false,
+                name: data[i].place_name,
+                distance: dis,
+                star:'3', 
+                review:'263',});
             console.log(this.newPlace.name);
         }       
 
@@ -549,6 +510,12 @@ export default {
         this.map.setBounds(bounds);
       } 
      },
+
+     Placehere(){
+    this.$store.commit('fnSetName', this.name);
+      this.$store.commit('fnSetAddress', this.address);
+      this.$store.commit('fnSetNumber', this.phone);
+  },
 
     displayplaceMarker(place){
       var marker = new kakao.maps.Marker({
@@ -560,22 +527,22 @@ export default {
     kakao.maps.event.addListener(marker, 'click', function() {
         // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
         console.log(place.place_name, place.address_name, place.phone);
-        // this.name = place.place_name;
-        // this.address = place.address_name;
-        // this.phone = place.phone;
+        this.name = place.place_name;
+        this.address = place.address_name;
+        this.phone = place.phone;
+        this.Placehere();
         // this.$store.commit('fnSetName', this.name);
         // this.$store.commit('fnSetAddress', this.address);
         // this.$store.commit('fnSetNumber', this.phone);
     });
 
-      this.name = place.place_name;
-      this.address = place.address_name;
-      this.phone = place.phone;
-      this.$store.commit('fnSetName', this.name);
-      this.$store.commit('fnSetAddress', this.address);
-      this.$store.commit('fnSetNumber', this.phone);
+      // this.name = place.place_name;
+      // this.address = place.address_name;
+      // this.phone = place.phone;
+      // this.$store.commit('fnSetName', this.name);
+      // this.$store.commit('fnSetAddress', this.address);
+      // this.$store.commit('fnSetNumber', this.phone);
   },
-
    
     Reserv () {
        const reservData = {
