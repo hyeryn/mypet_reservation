@@ -10,14 +10,16 @@ router.post('/reservation', function (req, res) { // 하위 링크 수정
 
     var user_id = req.body.user_id;
     var date = new Date(req.body.date);
-    var svc_id = req.body.svc_id;
 
-    con.query(`INSERT INTO service (name, mobile, addr, time, type) VALUES (\'${name}\', \'${mobile}\',\'${addr}\',\'${time}'\,\'${type}'\);`, (err) => {
+
+    con.query(`INSERT INTO service (name, mobile, addr, time, type) VALUES (\'${name}\', \'${mobile}\',\'${addr}\',\'${time}'\,\'${type}'\);`, function(err, result1, field) {
         if (err) res.json({ success: false, msg: 'service save fail' });
         else res.json({ success: true, msg: 'service save success' });
+        tmp_service = result1.insertId;
     });
 
-    con.query(`INSERT INTO reservation (date, svc_id, client_id) VALUES (\'${date}\', \'${svc_id}\',\'${user_id}\');`, (err) => {
+    con.query(`INSERT INTO reservation (date, svc_id, client_id) VALUES (\'${date}\', \'${tmp_service}\',\'${user_id}\');`, (err) => {
+
         if (err) res.json({ success: false, msg: 'res fail' });
         else res.json({ success: true, msg: 'res success' });
     });
