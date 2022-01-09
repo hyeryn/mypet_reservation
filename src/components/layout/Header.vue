@@ -33,8 +33,8 @@
 
                 <b-collapse id="nav-collapse" is-nav>
                     <v-autocomplete class="mx-3"></v-autocomplete>
-                    <div v-if="isUserLogin">
-                        <p>{{  this.$store.state.nickname }}</p>
+                    <div v-if="this.$store.getters.fnGetNickName != ''">
+                        <p class="large">{{  this.$store.state.nickname }}</p>
                     </div>
                     <div v-else>
                         <v-btn color="#68788C" elevation="2" class="mx-1 fw-bold" type="submit" href="/Login"><span style="color:white">로그인</span></v-btn>
@@ -52,13 +52,6 @@ export default {
     name: "header",
     data : function() {
     return {
-        computed: {
-            isUserLogin() {
-                console.log("isUserLogin 호출");
-                console.log(this.$store.state.nickname);
-                return this.$store.getters.isLogin;
-            },
-        },
         }
     }
 }

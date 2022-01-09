@@ -33,9 +33,6 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    someAction({ getters }){
-      const isLogin = getters.isLogin // eslint-disable-line no-unused-vars
-    }
   },
   getters:{
     fnGetPlace: function(state) {return state.sPlace},
@@ -46,12 +43,6 @@ export default new Vuex.Store({
     fnGetDate: function(state) {return state.sTime},
 
     fnGetId: function(state) {return state.id},
-    //fnGetNickName: function(state) {return state.nickname},
-    Users: state => {
-      return state.nickname;
-    },
-    isLogin(state) {
-      return state.nickname !== '';
-    }
+    fnGetNickName: function(state) {return state.nickname},
   },
 })
