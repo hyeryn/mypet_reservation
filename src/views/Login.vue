@@ -47,9 +47,9 @@
                             로그인
                         </b-button>
                     </div>
-                    <b-card class="mt-3" header="Form Data Result">
+                    <!--<b-card class="mt-3" header="Form Data Result">
                         <pre class="m-0">{{ loginForm }}</pre>
-                    </b-card>
+                    </b-card>-->
                     <div>
                         <a href="#" class="row my-2 text-muted smail">회원가입 하기</a>
                         <a href="#" class="row my-2 text-muted smail">비밀번호 찾기</a>

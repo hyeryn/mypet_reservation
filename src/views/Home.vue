@@ -27,11 +27,11 @@
                                 <img src="https://prodigits.co.uk/thumbs/wallpapers/p2ls/animals/35/e3f7a47e12467080.jpg" class="card-img-top img-fluid"  style="height: 250px; border-radius: 5px;" alt="...">
                             </div>
                         </div>
-                        <div class="container my-3">
-                            그림일기 자리 입니다. (깍두기 일기장으로 구현 예정)
+                        <div class="container">
+                            오늘은 날씨가 맑아서 멍멍이랑 산책을 다녀왔다! 내일도 맑기를~...
                         </div>
-                        <div>
-                            <v-btn class="mx-2 justify-end" size="sm" variant="warning" href="#" color="#2A558C" style="color:white;">자세히 보기</v-btn>
+                        <div class="my-3 mx-3">
+                            <v-btn class="py-2 px-4" size="sm" variant="warning" href="#" color="#2A558C" style="color:white;">자세히 보기</v-btn>
                         </div>
                     </div>
                 </div>

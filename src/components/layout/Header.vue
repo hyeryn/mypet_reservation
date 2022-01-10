@@ -52,6 +52,7 @@ export default {
     name: "header",
     data : function() {
     return {
+            nickname: this.$store.getters.fnGetNickName,
         }
     }
 }
