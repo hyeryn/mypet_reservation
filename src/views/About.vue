@@ -211,6 +211,7 @@ export default {
                 id: '',
             },
             zip: '',
+            addr: '',
             addr1: '',
             addr2: '', 
             
@@ -256,13 +257,15 @@ export default {
             new window.daum.Postcode({
                 oncomplete: (data) => {
         
+                    let addr = ''
+
                     if (data.userSelectedType === 'R') { 
                         addr = data.roadAddress
                     } else {
                         addr = data.jibunAddress
                     }
         
-                    this.address = add;
+                    this.address = addr;
                     elementWrap.style.display = 'none'
 
                     document.body.scrollTop = currentScroll
